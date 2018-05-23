@@ -41,10 +41,6 @@
 	 $("#fm").form("submit",{
 		url:url,
 		onSubmit:function(){
-			if($("#cusManager").combobox("getValue")==""){
-				$.messager.alert("系统提示","请选择客户经理！");
-				return false;
-			}
 			return $(this).form("validate");
 		},
 		success:function(result){
@@ -100,33 +96,6 @@
 		} 
 	 });
  }
-  
- function openCustomerLinkMan(){
-	 var selectedRows=$("#dg").datagrid("getSelections");
-	 if(selectedRows.length!=1){
-		 $.messager.alert("系统提示","请选择一条要管理的数据！");
-		 return;
-	 }
-	 window.parent.openTab('客户联系人管理','linkManManage.jsp?cusId='+selectedRows[0].id,'icon-lxr');
- }
- 
- function openCustomerContact(){
-	 var selectedRows=$("#dg").datagrid("getSelections");
-	 if(selectedRows.length!=1){
-		 $.messager.alert("系统提示","请选择一条要管理的数据！");
-		 return;
-	 }
-	 window.parent.openTab('客户交往记录管理','contactManage.jsp?cusId='+selectedRows[0].id,'icon-jwjl');
- }
- 
- function openCustomerOrder(){
-	 var selectedRows=$("#dg").datagrid("getSelections");
-	 if(selectedRows.length!=1){
-		 $.messager.alert("系统提示","请选择一条要管理的数据！");
-		 return;
-	 }
-	 window.parent.openTab('客户历史订单查询','orderManage.jsp?cusId='+selectedRows[0].id,'icon-lsdd');
- }
 </script>
 <title>Insert title here</title>
 </head>
@@ -173,6 +142,8 @@
    			<td>客户名称：</td>
    			<td><input type="text" id="name" name="name" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
    			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+   			<td>客户地址：</td>
+   			<td><input type="text" id="address" name="address" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
    		</tr>
    		<tr>
    			<td>邮政编码：</td>
