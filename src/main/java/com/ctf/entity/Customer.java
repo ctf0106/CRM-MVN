@@ -13,6 +13,7 @@ public class Customer {
 	private String address; // 客户地址
 	private String postCode; // 邮政编码
 	private String phone; // 联系电话
+	private Integer companyID;
 	
 	public Integer getId() {
 		return id;
@@ -51,6 +52,12 @@ public class Customer {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public Integer getCompanyID() {
+		return companyID;
+	}
+	public void setCompanyID(Integer companyID) {
+		this.companyID = companyID;
 	}
 	
 }

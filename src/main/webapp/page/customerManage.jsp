@@ -12,7 +12,15 @@
 <script type="text/javascript">
  
  var url;
-
+ 
+ $(function(){
+		$("#companyID").combobox({
+			 url:'../company/comboList.do',
+			    valueField:'id',
+			    textField:'name'
+		});
+	});
+ 
  function searchCustomer(){
 	 $("#dg").datagrid('load',{
 		"khno":$("#s_khno").val(),
@@ -116,6 +124,7 @@
 		<tr>
 	 		<th field="address" width="200" align="center" >客户地址</th>
 	 		<th field="postCode" width="100" align="center" >邮政编码</th>
+	 		<th field="companyName" width="100" align="center" >归属单位</th>
 		</tr>
 	</thead>
  </table>
@@ -151,6 +160,12 @@
    			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
    			<td>联系电话：</td>
    			<td><input type="text" id="phone" name="phone" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
+   		</tr>
+   			<tr>
+   			<td>归属单位：</td>
+   			<td>
+   			<input class="easyui-combobox" id="companyID" name="companyID" data-options="panelHeight:'auto',editable:false,valueField:'id',textField:'name',url:'../company/comboList.do'"/><font color="red">*</font>
+   			</td>
    		</tr>
    	</table>
    </form>

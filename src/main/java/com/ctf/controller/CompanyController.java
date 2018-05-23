@@ -1,6 +1,7 @@
 package com.ctf.controller;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,15 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ctf.entity.Company;
 import com.ctf.entity.PageBean;
 import com.ctf.service.CompanyService;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
+import com.ctf.util.WordUtil;
 
+import freemarker.template.Template;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 /**
  * 客户Controller层
@@ -117,6 +122,34 @@ public class CompanyController {
 		JSONObject jsonObject=JSONObject.fromObject(company);
 		ResponseUtil.write(response, jsonObject);
 		return null;
+	}
+	
+	/**
+	 * 查询单位列表
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/comboList")
+	public void comboList(HttpServletResponse response)throws Exception{
+		JSONArray jsonArray=new JSONArray();
+		JSONObject jsonObject=new JSONObject();
+		jsonObject.put("id", "");
+		jsonObject.put("name", "请选择...");
+		jsonArray.add(jsonObject);
+		List<Company> companyList=companyService.findAllList();
+		JsonConfig jsonConfig=new JsonConfig();
+		jsonConfig.setExcludes(new String[]{" "});
+		JSONArray rows=JSONArray.fromObject(companyList, jsonConfig);
+		jsonArray.addAll(rows);
+		ResponseUtil.write(response, jsonArray);
+	}
+	
+	
+	@RequestMapping("/export")
+	public void export(HttpServletResponse response)throws Exception{
+		Template freemark=WordUtil.export();
+		ResponseUtil.export(response, freemark, "利用模版导出excel.xls");
 	}
 	
 }

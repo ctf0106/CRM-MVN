@@ -13,12 +13,15 @@
  
  var url;
 
+ 
  function searchCompany(){
 	 $("#dg").datagrid('load',{
 		"khno":$("#s_khno").val(),
 		"name":$("#s_name").val()
 	 });
  }
+ 
+ 
  
  function openCompanyAddDialog(){
 	 $("#dlg").dialog("open").dialog("setTitle","添加单位信息");
@@ -71,7 +74,6 @@
 	 $("#dlg").dialog("close");
 	 resetValue();
  }
- 
  function deleteCompany(){
 	 var selectedRows=$("#dg").datagrid("getSelections");
 	 if(selectedRows.length==0){
@@ -96,6 +98,12 @@
 		} 
 	 });
  }
+ function formatOper(val,row,index){  
+	    return '<a href="javascript:exportWord()">导出</a>';  
+	} 
+ function exportWord(){
+	 window.location.href="${pageContext.request.contextPath}/company/export.do"
+ }
 </script>
 <title>Insert title here</title>
 </head>
@@ -109,6 +117,7 @@
 	 		<th field="id" width="50" align="center" hidden="true">编号</th>
 	 		<th field="name" width="200" align="center">单位名称</th>
 	 		<th field="address" width="100" align="center">单位地址</th>
+	 		<th field="export" width="100" align="center" data-options="field:'id',width:60,align:'center',formatter:formatOper">导出文档</th>
 		</tr>
 	</thead>
  </table>

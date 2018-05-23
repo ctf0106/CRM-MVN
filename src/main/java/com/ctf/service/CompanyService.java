@@ -53,5 +53,7 @@ public interface CompanyService {
 	 * @return
 	 */
 	public Company findById(Integer id);
+
+	public List<Company> findAllList();
 	
 }

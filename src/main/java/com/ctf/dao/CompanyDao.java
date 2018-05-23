@@ -55,6 +55,8 @@ public interface CompanyDao {
 	 * @return
 	 */
 	public Company findById(Integer id);
+
+	public List<Company> findAllList();
 	
 
 }

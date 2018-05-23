@@ -56,5 +56,10 @@ public class CompanyServiceImpl implements CompanyService{
 		return companyDao.findById(id);
 	}
 
+	@Override
+	public List<Company> findAllList() {
+		return companyDao.findAllList();
+	}
+
 
 }

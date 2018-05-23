@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ctf.entity.Company;
 import com.ctf.entity.Customer;
 import com.ctf.entity.PageBean;
+import com.ctf.service.CompanyService;
 import com.ctf.service.CustomerService;
 import com.ctf.util.DateUtil;
 import com.ctf.util.ResponseUtil;
@@ -20,6 +22,7 @@ import com.ctf.util.StringUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 /**
  * ¿Í»§Controller²ã
@@ -32,6 +35,9 @@ public class CustomerController {
 	
 	@Resource
 	private CustomerService customerService;
+	
+	@Resource
+	private CompanyService companyService;
 	
 	
 	/**
@@ -55,7 +61,20 @@ public class CustomerController {
 		Long total=customerService.getTotal(map);
 		JSONObject result=new JSONObject();
 		JSONArray jsonArray=JSONArray.fromObject(customerList);
-		result.put("rows", jsonArray);
+		JSONArray updateJSON=new JSONArray();
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			Integer companyID = jsonObject.getInt("companyID");
+			if(companyID!=null && companyID!=0){
+				Company company = companyService.findById(companyID);
+				jsonObject.put("companyName", company.getName());
+			}else{
+				jsonObject.put("companyName", null);
+			}
+			
+			updateJSON.add(jsonObject);
+		}
+		result.put("rows", updateJSON);
 		result.put("total", total);
 		ResponseUtil.write(response, result);
 		return null;
