@@ -111,6 +111,7 @@
 	<div class="easyui-accordion" data-options="fit:true,border:false">
 		<div title="客户管理"  data-options="iconCls:'icon-khgl'" style="padding:10px;">
 			<a href="javascript:openTab('客户信息管理','customerManage.jsp','icon-khxxgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khxxgl'" style="width: 150px;">客户信息管理</a>
+			<a href="javascript:openTab('单位管理','companyManage.jsp','icon-khxxgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khxxgl'" style="width: 150px;">单位管理</a>
 		</div>
 		<div title="系统管理"  data-options="iconCls:'icon-item'" style="padding:10px">
 			<a href="javascript:openPasswordModifyDialog()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-modifyPassword'" style="width: 150px;">修改密码</a>
