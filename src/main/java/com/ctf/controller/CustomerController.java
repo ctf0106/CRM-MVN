@@ -1,4 +1,4 @@
-package com.java1234.controller;
+package com.ctf.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.java1234.entity.Customer;
-import com.java1234.entity.PageBean;
-import com.java1234.service.CustomerService;
-import com.java1234.util.DateUtil;
-import com.java1234.util.ResponseUtil;
-import com.java1234.util.StringUtil;
+import com.ctf.entity.Customer;
+import com.ctf.entity.PageBean;
+import com.ctf.service.CustomerService;
+import com.ctf.util.DateUtil;
+import com.ctf.util.ResponseUtil;
+import com.ctf.util.StringUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

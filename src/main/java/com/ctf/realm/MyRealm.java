@@ -1,4 +1,4 @@
-package com.java1234.realm;
+package com.ctf.realm;
 
 import javax.annotation.Resource;
 
@@ -11,8 +11,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
-import com.java1234.entity.User;
-import com.java1234.service.UserService;
+import com.ctf.entity.User;
+import com.ctf.service.UserService;
 
 /**
  * ×Ô¶¨ÒåRealm

@@ -1,9 +1,9 @@
-package com.java1234.service;
+package com.ctf.service;
 
 import java.util.List;
 import java.util.Map;
 
-import com.java1234.entity.Customer;
+import com.ctf.entity.Customer;
 
 /**
  * 客户Service接口

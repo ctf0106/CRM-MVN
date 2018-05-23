@@ -1,4 +1,4 @@
-package com.java1234.service.impl;
+package com.ctf.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.java1234.dao.UserDao;
-import com.java1234.entity.User;
-import com.java1234.service.UserService;
+import com.ctf.dao.UserDao;
+import com.ctf.entity.User;
+import com.ctf.service.UserService;
 
 /**
  * 用户Service实现类

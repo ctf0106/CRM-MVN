@@ -1,9 +1,9 @@
-package com.java1234.dao;
+package com.ctf.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import com.java1234.entity.User;
+import com.ctf.entity.User;
 
 /**
  * 用户Dao接口

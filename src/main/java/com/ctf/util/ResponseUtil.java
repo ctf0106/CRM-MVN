@@ -1,4 +1,4 @@
-package com.java1234.util;
+package com.ctf.util;
 
 import java.io.PrintWriter;
 

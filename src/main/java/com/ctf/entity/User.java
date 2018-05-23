@@ -1,4 +1,4 @@
-package com.java1234.entity;
+package com.ctf.entity;
 
 /**
  * 用户实体

@@ -1,4 +1,4 @@
-package com.java1234.util;
+package com.ctf.util;
 
 /**
  * ×Ö·û´®¹¤¾ßÀà
