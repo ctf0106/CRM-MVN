@@ -159,9 +159,6 @@
    				<select class="easyui-combobox" id="roleName" name="roleName" style="width: 154px" editable="false" panelHeight="auto">
    					<option value="">请选择角色...</option>
    					<option value="系统管理员">系统管理员</option>
-   					<option value="销售主管">销售主管</option>
-   					<option value="客户经理">客户经理</option>
-   					<option value="高管">高管</option>
    				</select>
    				&nbsp;<font color="red">*</font>
    			</td>
