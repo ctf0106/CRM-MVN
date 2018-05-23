@@ -9,6 +9,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     </settings>
 	<!-- 别名 -->
 	<typeAliases>
-		<package name="com.java1234.entity"/>
+		<package name="com.ctf.entity"/>
 	</typeAliases>
 </configuration>
