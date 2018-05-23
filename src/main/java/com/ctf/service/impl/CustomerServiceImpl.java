@@ -54,10 +54,4 @@ public class CustomerServiceImpl implements CustomerService{
 		return customerDao.findById(id);
 	}
 
-	@Override
-	public Long getTotalCustomerGx(Map<String, Object> map) {
-		return customerDao.getTotalCustomerGx(map);
-	}
-
-
 }

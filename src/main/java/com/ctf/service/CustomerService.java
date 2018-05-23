@@ -54,11 +54,4 @@ public interface CustomerService {
 	 */
 	public Customer findById(Integer id);
 	
-	
-	/**
-	 * 查询客户贡献记录数
-	 * @param map
-	 * @return
-	 */
-	public Long getTotalCustomerGx(Map<String,Object> map);
 }
