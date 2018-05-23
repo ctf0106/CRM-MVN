@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ctf.entity.Company;
 import com.ctf.entity.PageBean;
 import com.ctf.service.CompanyService;
-import com.ctf.util.DateUtil;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
 

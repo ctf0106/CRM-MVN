@@ -6,7 +6,7 @@ import java.util.Map;
 import com.ctf.entity.Customer;
 
 /**
- * ï¿½Í»ï¿½Daoï¿½Ó¿ï¿½
+ * ¿Í»§ÐÅÏ¢dao²ã
  * @author Administrator
  *
  */
@@ -14,59 +14,47 @@ public interface CustomerDao {
 
 	
 	/**
-	 * ï¿½ï¿½Ñ¯ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * Í¨¹ý²ÎÊý²éÑ¯
 	 * @param map
 	 * @return
 	 */
 	public List<Customer> find(Map<String,Object> map);
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
+	 * ²éÑ¯×ÜÊý
 	 * @param map
 	 * @return
 	 */
 	public Long getTotal(Map<String,Object> map);
 	
 	/**
-	 * ï¿½ï¿½Ó¿Í»ï¿?
+	 * Ìí¼Ó¿Í»§
 	 * @param customer
 	 * @return
 	 */
 	public int add(Customer customer);
 	
 	/**
-	 * ï¿½Þ¸Ä¿Í»ï¿½
+	 * ÐÞ¸Ä¿Í»§ÐÅÏ¢
 	 * @param customer
 	 * @return
 	 */
 	public int update(Customer customer);
 	
 	/**
-	 * É¾ï¿½ï¿½ï¿½Í»ï¿½
+	 * É¾³ý¿Í»§ÐÅÏ¢ 
 	 * @param id
 	 * @return
 	 */
 	public int delete(Integer id);
 	
 	/**
-	 * Í¨ï¿½ï¿½Idï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
+	 * Í¨¹ýid½øÐÐ²éÑ¯
 	 * @param id
 	 * @return
 	 */
 	public Customer findById(Integer id);
 	
-	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ä¿Í»ï¿½ 6ï¿½ï¿½ï¿½ï¿½Î´ï¿½Âµï¿½ï¿½Ä¿Í»ï¿½
-	 * @return
-	 */
-	public List<Customer> findLossCustomer();
-	
-	/**
-	 * ï¿½ï¿½Ñ¯ï¿½Í»ï¿½ï¿½ï¿½ï¿½×¼ï¿½Â¼ï¿½ï¿½
-	 * @param map
-	 * @return
-	 */
-	public Long getTotalCustomerGx(Map<String,Object> map);
 	
 
 }

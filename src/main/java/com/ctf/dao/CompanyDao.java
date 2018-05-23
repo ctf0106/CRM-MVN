@@ -7,7 +7,7 @@ import com.ctf.entity.Company;
 import com.ctf.entity.Customer;
 
 /**
- * ï¿½Í»ï¿½Daoï¿½Ó¿ï¿½
+ * µ¥Î»dao²ã
  * @author Administrator
  *
  */
@@ -15,42 +15,42 @@ public interface CompanyDao {
 
 	
 	/**
-	 * ï¿½ï¿½Ñ¯ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾Ý²ÎÊý²éÑ¯
 	 * @param map
 	 * @return
 	 */
 	public List<Company> find(Map<String,Object> map);
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
+	 * »ñÈ¡×Ü¹²¶àÉÙ
 	 * @param map
 	 * @return
 	 */
 	public Long getTotal(Map<String,Object> map);
 	
 	/**
-	 * ï¿½ï¿½Ó¿Í»ï¿?
+	 * Ìí¼Óµ¥Î»
 	 * @param customer
 	 * @return
 	 */
 	public int add(Company customer);
 	
 	/**
-	 * ï¿½Þ¸Ä¿Í»ï¿½
+	 * ÐÞ¸Äµ¥Î»
 	 * @param customer
 	 * @return
 	 */
 	public int update(Company customer);
 	
 	/**
-	 * É¾ï¿½ï¿½ï¿½Í»ï¿½
+	 * É¾³ýµ¥Î»
 	 * @param id
 	 * @return
 	 */
 	public int delete(Integer id);
 	
 	/**
-	 * Í¨ï¿½ï¿½Idï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
+	 * Í¨¹ýid½øÐÐ²éÑ¯
 	 * @param id
 	 * @return
 	 */
