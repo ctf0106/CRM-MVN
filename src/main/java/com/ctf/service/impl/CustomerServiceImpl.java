@@ -12,7 +12,7 @@ import com.ctf.entity.Customer;
 import com.ctf.service.CustomerService;
 
 /**
- * 客户Service接口
+ * 锟酵伙拷Service锟接匡拷
  * @author Administrator
  *
  */
@@ -52,6 +52,11 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public Customer findById(Integer id) {
 		return customerDao.findById(id);
+	}
+
+	@Override
+	public List<Customer> findByCompanyId(int id) {
+		return customerDao.findByCompanyId(id);
 	}
 
 }

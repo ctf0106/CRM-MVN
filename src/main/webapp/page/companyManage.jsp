@@ -99,10 +99,13 @@
 	 });
  }
  function formatOper(val,row,index){  
-	    return '<a href="javascript:exportWord()">导出</a>';  
+	    return '<a href="javascript:exportWord('+index+')">导出</a>';  
 	} 
  function exportWord(){
-	 window.location.href="${pageContext.request.contextPath}/company/export.do"
+	 var row = $('#dg').datagrid('getSelected'); 
+	 if(row){
+	 window.location.href="${pageContext.request.contextPath}/company/export.do?id="+row.id
+	 }
  }
 </script>
 <title>Insert title here</title>

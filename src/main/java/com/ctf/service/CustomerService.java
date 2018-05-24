@@ -6,52 +6,54 @@ import java.util.Map;
 import com.ctf.entity.Customer;
 
 /**
- * ¿Í»§Service½Ó¿Ú
+ * ï¿½Í»ï¿½Serviceï¿½Ó¿ï¿½
  * @author Administrator
  *
  */
 public interface CustomerService {
 
 	/**
-	 * ²éÑ¯¿Í»§¼¯ºÏ
+	 * ï¿½ï¿½Ñ¯ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param map
 	 * @return
 	 */
 	public List<Customer> find(Map<String,Object> map);
 	
 	/**
-	 * »ñÈ¡×Ü¼ÇÂ¼Êý
+	 * ï¿½ï¿½È¡ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
 	 * @param map
 	 * @return
 	 */
 	public Long getTotal(Map<String,Object> map);
 	
 	/**
-	 * Ìí¼Ó¿Í»§
+	 * ï¿½ï¿½Ó¿Í»ï¿½
 	 * @param customer
 	 * @return
 	 */
 	public int add(Customer customer);
 	
 	/**
-	 * ÐÞ¸Ä¿Í»§
+	 * ï¿½Þ¸Ä¿Í»ï¿½
 	 * @param customer
 	 * @return
 	 */
 	public int update(Customer customer);
 	
 	/**
-	 * É¾³ý¿Í»§
+	 * É¾ï¿½ï¿½ï¿½Í»ï¿½
 	 * @param id
 	 * @return
 	 */
 	public int delete(Integer id);
 	
 	/**
-	 * Í¨¹ýId²éÕÒÊµÌå
+	 * Í¨ï¿½ï¿½Idï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
 	 * @param id
 	 * @return
 	 */
 	public Customer findById(Integer id);
+
+	public List<Customer> findByCompanyId(int id);
 	
 }

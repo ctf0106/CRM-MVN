@@ -6,9 +6,9 @@ package com.ctf.entity;
  */
 public class Company {
 
-	private Integer id; // 编号
-	private String name; // 客户名称
-	private String address; // 客户地址
+	private Integer id; 
+	private String name;
+	private String address; 
 	
 	public Integer getId() {
 		return id;

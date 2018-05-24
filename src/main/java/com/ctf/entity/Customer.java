@@ -1,18 +1,17 @@
 package com.ctf.entity;
 
 /**
- * 客户实体
  * @author Administrator
  *
  */
 public class Customer {
 
-	private Integer id; // 编号
-	private String khno; // 客户编号 动态生成
-	private String name; // 客户名称
-	private String address; // 客户地址
-	private String postCode; // 邮政编码
-	private String phone; // 联系电话
+	private Integer id;
+	private String khno; 
+	private String name; 
+	private String address; 
+	private String postCode;
+	private String phone;
 	private Integer companyID;
 	
 	public Integer getId() {

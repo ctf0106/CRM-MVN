@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ctf.entity.Company;
+import com.ctf.entity.Customer;
 import com.ctf.entity.PageBean;
 import com.ctf.service.CompanyService;
+import com.ctf.service.CustomerService;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
 import com.ctf.util.WordGenerator;
@@ -41,6 +43,8 @@ public class CompanyController {
 	private CompanyService companyService;
 	
 	
+	@Resource
+	private CustomerService customerService;
 	/**
 	 * @param page
 	 * @param rows
@@ -140,7 +144,7 @@ public class CompanyController {
 	
 	
 	@RequestMapping("/export")
-	public void export(HttpServletResponse response,HttpServletRequest request)throws Exception{
+	public void export(@RequestParam(value="id")String id,HttpServletResponse response,HttpServletRequest request)throws Exception{
 		
 		request.setCharacterEncoding("utf-8");  
         Map<String, Object> map = new HashMap<String, Object>();  
@@ -150,7 +154,13 @@ public class CompanyController {
 //            String value = request.getParameter(key);  
 //            map.put(key, value);  
 //        }  
-        map.put("title","标题" );  
+        
+        Company company = companyService.findById(Integer.parseInt(id));
+        map.put("title",company.getName() );
+        List<Customer> customerList = customerService.findByCompanyId(Integer.parseInt(id));
+        map.put("customerList", customerList);
+        JSONObject.fromObject(map);
+        System.out.println(customerList);
         File file = null;  
         InputStream fin = null;  
         ServletOutputStream out = null;  

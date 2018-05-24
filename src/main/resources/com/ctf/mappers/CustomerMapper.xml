@@ -30,6 +30,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 	
+	
+	<select id="findByCompanyId" parameterType="Integer" resultMap="CustomerResult">
+		select * from t_customer where companyID=#{id}
+	</select>
+	
 	<select id="getTotal" parameterType="Map" resultType="Long">
 		select count(*) from t_customer
 		<where>
