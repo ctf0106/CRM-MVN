@@ -1,11 +1,17 @@
 package com.ctf.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -18,6 +24,7 @@ import com.ctf.entity.PageBean;
 import com.ctf.service.CompanyService;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
+import com.ctf.util.WordGenerator;
 import com.ctf.util.WordUtil;
 
 import freemarker.template.Template;
@@ -26,7 +33,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**
- * ¿Í»§Controller²ã
+ * ï¿½Í»ï¿½Controllerï¿½ï¿½
  * @author Administrator
  *
  */
@@ -39,7 +46,7 @@ public class CompanyController {
 	
 	
 	/**
-	 * ·ÖÒ³Ìõ¼þ²éÑ¯¿Í»§
+	 * ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½Í»ï¿½
 	 * @param page
 	 * @param rows
 	 * @param s_company
@@ -65,7 +72,7 @@ public class CompanyController {
 	}
 	
 	/**
-	 * Ìí¼Ó»òÕßÐÞ¸Ä¿Í»§
+	 * ï¿½ï¿½Ó»ï¿½ï¿½ï¿½ï¿½Þ¸Ä¿Í»ï¿½
 	 * @param user
 	 * @param response
 	 * @return
@@ -73,7 +80,7 @@ public class CompanyController {
 	 */
 	@RequestMapping("/save")
 	public String save(Company company,HttpServletResponse response)throws Exception{
-		int resultTotal=0; // ²Ù×÷µÄ¼ÇÂ¼ÌõÊý
+		int resultTotal=0; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
 		if(company.getId()==null){
 			resultTotal=companyService.add(company);
 		}else{
@@ -91,7 +98,7 @@ public class CompanyController {
 	
 	
 	/**
-	 * É¾³ý¿Í»§
+	 * É¾ï¿½ï¿½ï¿½Í»ï¿½
 	 * @param ids
 	 * @param response
 	 * @return
@@ -110,7 +117,7 @@ public class CompanyController {
 	}
 	
 	/**
-	 * Í¨¹ýID²éÕÒÊµÌå
+	 * Í¨ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
 	 * @param id
 	 * @param response
 	 * @return
@@ -124,18 +131,12 @@ public class CompanyController {
 		return null;
 	}
 	
-	/**
-	 * ²éÑ¯µ¥Î»ÁÐ±í
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
 	@RequestMapping("/comboList")
 	public void comboList(HttpServletResponse response)throws Exception{
 		JSONArray jsonArray=new JSONArray();
 		JSONObject jsonObject=new JSONObject();
 		jsonObject.put("id", "");
-		jsonObject.put("name", "ÇëÑ¡Ôñ...");
+		jsonObject.put("name", "è¯·é€‰æ‹©....");
 		jsonArray.add(jsonObject);
 		List<Company> companyList=companyService.findAllList();
 		JsonConfig jsonConfig=new JsonConfig();
@@ -147,9 +148,37 @@ public class CompanyController {
 	
 	
 	@RequestMapping("/export")
-	public void export(HttpServletResponse response)throws Exception{
-		Template freemark=WordUtil.export();
-		ResponseUtil.export(response, freemark, "ÀûÓÃÄ£°æµ¼³öexcel.xls");
-	}
+	public void export(HttpServletResponse response,HttpServletRequest request)throws Exception{
+		
+		request.setCharacterEncoding("utf-8");  
+        Map<String, Object> map = new HashMap<String, Object>();  
+//        Enumeration<String> paramNames = request.getParameterNames();  
+//        while(paramNames.hasMoreElements()) {  
+//            String key = paramNames.nextElement();  
+//            String value = request.getParameter(key);  
+//            map.put(key, value);  
+//        }  
+        map.put("title","æ ‡é¢˜" );  
+        File file = null;  
+        InputStream fin = null;  
+        ServletOutputStream out = null;  
+        try {  
+            file = WordGenerator.createDoc(map, "resume");  
+            fin = new FileInputStream(file);  
+            response.setCharacterEncoding("utf-8");  
+            response.setContentType("application/msword");  
+            response.addHeader("Content-Disposition", "attachment;filename=resume.doc");  
+            out = response.getOutputStream();  
+            byte[] buffer = new byte[512]; 
+            int bytesToRead = -1;  
+            while((bytesToRead = fin.read(buffer)) != -1) {  
+                out.write(buffer, 0, bytesToRead);  
+            }  
+        } finally {  
+            if(fin != null) fin.close();  
+            if(out != null) out.close();  
+            if(file != null) file.delete(); 
+        }  
+    } 
 	
 }
