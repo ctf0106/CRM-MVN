@@ -25,9 +25,6 @@ import com.ctf.service.CompanyService;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
 import com.ctf.util.WordGenerator;
-import com.ctf.util.WordUtil;
-
-import freemarker.template.Template;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
