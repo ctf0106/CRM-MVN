@@ -30,7 +30,6 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**
- * �ͻ�Controller��
  * @author Administrator
  *
  */
@@ -43,7 +42,6 @@ public class CompanyController {
 	
 	
 	/**
-	 * ��ҳ������ѯ�ͻ�
 	 * @param page
 	 * @param rows
 	 * @param s_company
@@ -69,7 +67,6 @@ public class CompanyController {
 	}
 	
 	/**
-	 * ��ӻ����޸Ŀͻ�
 	 * @param user
 	 * @param response
 	 * @return
@@ -95,7 +92,6 @@ public class CompanyController {
 	
 	
 	/**
-	 * ɾ���ͻ�
 	 * @param ids
 	 * @param response
 	 * @return
@@ -114,7 +110,6 @@ public class CompanyController {
 	}
 	
 	/**
-	 * ͨ��ID����ʵ��
 	 * @param id
 	 * @param response
 	 * @return

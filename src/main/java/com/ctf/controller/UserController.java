@@ -23,7 +23,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * 用户Controller层
  * @author Administrator
  *
  */
@@ -35,7 +34,6 @@ public class UserController {
 	private UserService userService;
 	
 	/**
-	 * 用户登录
 	 * @param user
 	 * @param request
 	 * @return
@@ -46,7 +44,7 @@ public class UserController {
 		User resultUser=userService.login(user);
 		if(resultUser==null){
 			request.setAttribute("user", user);
-			request.setAttribute("errorMsg", "用户名或密码错误！");
+			request.setAttribute("errorMsg", "鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒");
 			return "login";
 		}else{
 			HttpSession session=request.getSession();
@@ -56,7 +54,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 添加或者修改用户
 	 * @param user
 	 * @param response
 	 * @return
@@ -64,7 +61,7 @@ public class UserController {
 	 */
 	@RequestMapping("/save")
 	public String save(User user,HttpServletResponse response)throws Exception{
-		int resultTotal=0; // 操作的记录条数
+		int resultTotal=0; // 锟斤拷锟斤拷锟侥硷拷录锟斤拷锟斤拷
 		if(user.getId()==null){
 			resultTotal=userService.add(user);
 		}else{
@@ -81,7 +78,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 修改用户密码
 	 * @param user
 	 * @param response
 	 * @return
@@ -104,7 +100,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 用户注销
 	 * @param session
 	 * @return
 	 * @throws Exception

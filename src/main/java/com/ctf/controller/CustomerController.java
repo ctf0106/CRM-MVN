@@ -25,7 +25,6 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 /**
- * ¿Í»§Controller²ã
  * @author Administrator
  *
  */
@@ -41,7 +40,6 @@ public class CustomerController {
 	
 	
 	/**
-	 * ·ÖÒ³Ìõ¼þ²éÑ¯¿Í»§
 	 * @param page
 	 * @param rows
 	 * @param s_customer
@@ -81,7 +79,6 @@ public class CustomerController {
 	}
 	
 	/**
-	 * Ìí¼Ó»òÕßÐÞ¸Ä¿Í»§
 	 * @param user
 	 * @param response
 	 * @return
@@ -89,9 +86,9 @@ public class CustomerController {
 	 */
 	@RequestMapping("/save")
 	public String save(Customer customer,HttpServletResponse response)throws Exception{
-		int resultTotal=0; // ²Ù×÷µÄ¼ÇÂ¼ÌõÊý
+		int resultTotal=0; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
 		if(customer.getId()==null){
-			customer.setKhno("KH"+DateUtil.getCurrentDateStr()); // ¶¯Ì¬Éú³É¿Í»§±àºÅ
+			customer.setKhno("KH"+DateUtil.getCurrentDateStr()); // ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½É¿Í»ï¿½ï¿½ï¿½ï¿½
 			resultTotal=customerService.add(customer);
 		}else{
 			resultTotal=customerService.update(customer);
@@ -108,7 +105,6 @@ public class CustomerController {
 	
 	
 	/**
-	 * É¾³ý¿Í»§
 	 * @param ids
 	 * @param response
 	 * @return
@@ -127,7 +123,6 @@ public class CustomerController {
 	}
 	
 	/**
-	 * Í¨¹ýID²éÕÒÊµÌå
 	 * @param id
 	 * @param response
 	 * @return
