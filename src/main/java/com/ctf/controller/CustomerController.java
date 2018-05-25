@@ -1,28 +1,44 @@
 package com.ctf.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ctf.entity.Company;
 import com.ctf.entity.Customer;
+import com.ctf.entity.CustomerVo;
 import com.ctf.entity.PageBean;
 import com.ctf.service.CompanyService;
 import com.ctf.service.CustomerService;
 import com.ctf.util.DateUtil;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
-
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
+import sun.misc.BASE64Encoder;
 
 /**
  * @author Administrator
@@ -85,14 +101,24 @@ public class CustomerController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/save")
-	public String save(Customer customer,HttpServletResponse response)throws Exception{
-		int resultTotal=0; // �����ļ�¼����
+	public String save(Customer customer,HttpServletResponse response,HttpServletRequest request)throws Exception{
+		int resultTotal=0; 
 		if(customer.getId()==null){
-			customer.setKhno("KH"+DateUtil.getCurrentDateStr()); // ��̬���ɿͻ����
+			customer.setKhno("KH"+DateUtil.getCurrentDateStr()); 
+			customer.setGmt_create(DateUtil.getCurrentDate());
+			customer.setGmt_modified(DateUtil.getCurrentDate());
 			resultTotal=customerService.add(customer);
 		}else{
 			resultTotal=customerService.update(customer);
 		}
+		String qrCode = this.createQrCode(customer.getKhno(), BarcodeFormat.QR_CODE,request, response);
+		Customer updateObj=new Customer();
+		updateObj.setQrcode(qrCode);
+		updateObj.setId(customer.getId());
+		/**
+		 * 更新二维码
+		 */
+		customerService.update(updateObj);
 		JSONObject result=new JSONObject();
 		if(resultTotal>0){
 			result.put("success", true);
@@ -136,4 +162,42 @@ public class CustomerController {
 		return null;
 	}
 	
+	
+	@RequestMapping("/findByKhno")
+	public String findByKhno(@RequestParam(value="khno")String khno,HttpServletResponse response)throws Exception{
+		CustomerVo customerVo=customerService.findByKhno(khno);
+		JSONObject jsonObject=JSONObject.fromObject(customerVo);
+		ResponseUtil.write(response, jsonObject);
+		return null;
+	}
+	
+	public String createQrCode(String khno,BarcodeFormat codeFormat,HttpServletRequest request,HttpServletResponse response)throws Exception{
+		if(!khno.isEmpty()){
+			String filePath=request.getServletContext().getRealPath("/");
+			String qrCodeName=khno;
+			int width = 300;  
+	        int height = 300;  
+	        String format = "png";  
+	        Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();  
+	        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");  
+	        BitMatrix bitMatrix = null;  
+	        try {  
+	            bitMatrix = new MultiFormatWriter().encode(khno, codeFormat, width, height, hints);  
+	        } catch (WriterException e) {  
+	            e.printStackTrace();  
+	        }  
+	        File outputFile = new File(filePath+"static/qrCodeImage/"+qrCodeName+"."+format);
+	        MatrixToImageWriter.writeToFile(bitMatrix, format, outputFile);
+	        //读取二维码
+	        OutputStream os1 = new FileOutputStream(filePath+"static/qrCodeImage/"+qrCodeName+"."+format);  
+	        MatrixToImageWriter.writeToStream(bitMatrix, format, os1);  
+	        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);  
+	        ByteArrayOutputStream os = new ByteArrayOutputStream();
+	        ImageIO.write(image, format, os);
+	        byte b[] = os.toByteArray();
+	        String str = new BASE64Encoder().encode(b);  
+	        return "data:image/gif;base64,"+str;	
+		}
+		return null;
+	}
 }

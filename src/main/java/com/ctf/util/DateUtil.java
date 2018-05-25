@@ -1,5 +1,6 @@
 package com.ctf.util;
 
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,5 +28,11 @@ public class DateUtil {
 		Date date=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmss");
 		return sdf.format(date);
+	}
+	public static String getCurrentDate()throws Exception{
+		 Date currentTime = new Date();  
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+	    String dateString = formatter.format(currentTime);
+	    return dateString;
 	}
 }

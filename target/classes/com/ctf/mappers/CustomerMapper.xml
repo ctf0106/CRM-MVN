@@ -11,9 +11,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="address" column="address"/>
 		<result property="postCode" column="postCode"/>
 		<result property="phone" column="phone"/>
-		<result property="phone" column="phone"/>
 		<result property="companyID" column="companyID"/>
 	</resultMap>
+	<resultMap type="CustomerVo" id="CustomerVoResult">
+		<result property="id" column="id"/>
+		<result property="khno" column="khno"/>
+		<result property="name" column="name"/>
+		<result property="address" column="address"/>
+		<result property="postCode" column="postCode"/>
+		<result property="phone" column="phone"/>
+		<result property="companyName" column="companyName"/>
+	</resultMap>
+	
 	
 	<select id="find" parameterType="Map" resultMap="CustomerResult">
 		select * from t_customer
@@ -47,8 +56,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</where>
 	</select>
 	
-	<insert id="add" parameterType="Customer">
-		insert into t_customer values(null,#{khno},#{name},#{address},#{postCode},#{phone},#{companyID});
+	<insert id="add" parameterType="Customer" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO t_customer (id,khno,name,address,postCode,phone,companyID,gmt_create,gmt_modified) 
+		VALUES (null,#{khno},#{name},#{address},#{postCode},#{phone},#{companyID},#{gmt_create},#{gmt_modified});
 	</insert>
 	
 	<update id="update" parameterType="Customer">
@@ -72,6 +82,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="companyID!=null and companyID!='' ">
 				companyID=#{companyID},
 			</if>
+			<if test="barcode!=null and barcode!='' ">
+				barcode=#{barcode},
+			</if>
+			<if test="qrcode!=null and qrcode!='' ">
+				qrcode=#{qrcode},
+			</if>
+			<if test="gmt_create!=null and gmt_create!='' ">
+				gmt_create=#{gmt_create},
+			</if>
+			<if test="gmt_modified!=null and gmt_modified!='' ">
+				gmt_modified=#{gmt_modified},
+			</if>
 	    </set>
 	    where id=#{id}
 	</update>
@@ -85,12 +107,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from t_customer where id=#{id}
 	</select>
 	
-	<select id="getTotalCustomerGx" parameterType="Map" resultType="Long">
-		select count(*) from t_customer
-		<where>
-			<if test="name!=null and name!='' ">
-				and name like #{name}
-			</if>
-		</where>
+	<select id="findByKhno" parameterType="String" resultMap="CustomerVoResult">
+		select t_customer.id,t_customer.khno,t_customer.name,t_customer.address,t_customer.postCode,t_customer.phone,t_company.name as companyName 
+		from t_customer LEFT JOIN t_company on t_customer.companyID=t_company.id where 1=1
+		<if test="_parameter != null">
+             and t_customer.khno=#{khno}
+        </if> 
+		
 	</select>
+	
 </mapper> 

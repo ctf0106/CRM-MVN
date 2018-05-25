@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ctf.entity.Customer;
+import com.ctf.entity.CustomerVo;
 
 /**
  * �ͻ�Service�ӿ�
@@ -55,5 +56,7 @@ public interface CustomerService {
 	public Customer findById(Integer id);
 
 	public List<Customer> findByCompanyId(int id);
+
+	public CustomerVo findByKhno(String khno);
 	
 }

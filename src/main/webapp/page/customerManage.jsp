@@ -104,6 +104,12 @@
 		} 
 	 });
  }
+ function formatOper(value, row, index){  
+    if(row.qrcode){  
+        return "<img style='width:96px;height:96px;' border='1' src='"+row.qrcode+"'/>";  
+    }  
+}
+
 </script>
 <title>Insert title here</title>
 </head>
@@ -125,6 +131,8 @@
 	 		<th field="address" width="200" align="center" >客户地址</th>
 	 		<th field="postCode" width="100" align="center" >邮政编码</th>
 	 		<th field="companyName" width="100" align="center" >归属单位</th>
+	 		<th field="qrcode" width="100" align="center" hidden="true">二维码base64</th>
+	 		<th field="chakan" width="100" align="center" data-options="field:'id',width:60,align:'center',formatter:formatOper" >二维码</th>
 		</tr>
 	</thead>
  </table>

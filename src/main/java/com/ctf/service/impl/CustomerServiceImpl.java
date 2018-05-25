@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ctf.dao.CustomerDao;
 import com.ctf.entity.Customer;
+import com.ctf.entity.CustomerVo;
 import com.ctf.service.CustomerService;
 
 /**
@@ -57,6 +58,11 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public List<Customer> findByCompanyId(int id) {
 		return customerDao.findByCompanyId(id);
+	}
+
+	@Override
+	public CustomerVo findByKhno(String khno) {
+		return customerDao.findByKhno(khno);
 	}
 
 }
