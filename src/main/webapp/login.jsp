@@ -16,7 +16,6 @@ BODY {
 	PADDING-RIGHT: 0px;
 	PADDING-TOP: 0px
 }
-
 A:link {
 	COLOR: #000000;
 	TEXT-DECORATION: none
@@ -69,7 +68,6 @@ A:active {
 			return;
 		}
 		$("#adminlogin").submit();			
-		
 	}
 </script>
 </head>

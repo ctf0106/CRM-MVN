@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>客户管理系统</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jquery-easyui-1.3.3/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jquery-easyui-1.3.3/themes/icon.css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/jquery-easyui-1.3.3/jquery.min.js"></script>
@@ -95,7 +95,7 @@
 				<img alt="logo" src="${pageContext.request.contextPath}/images/bglogo4.png">
 			</td>
 			<td valign="bottom" align="right" width="50%">
-				<font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.userName }</font>【${currentUser.trueName }】
+				<font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.userName}</font>【${currentUser.trueName }】
 			</td>
 		</tr>
 	</table>
@@ -112,6 +112,9 @@
 		<div title="客户管理"  data-options="iconCls:'icon-khgl'" style="padding:10px;">
 			<a href="javascript:openTab('客户信息管理','customerManage.jsp','icon-khxxgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khxxgl'" style="width: 150px;">客户信息管理</a>
 			<a href="javascript:openTab('单位管理','companyManage.jsp','icon-khxxgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khxxgl'" style="width: 150px;">单位管理</a>
+		</div>
+		<div title="管理员信息"  data-options="iconCls:'icon-jcsjgl'" style="padding:10px">
+			<a href="javascript:openTab('用户信息管理','userManage.jsp','icon-user')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-user'" style="width: 150px;">用户信息管理</a>
 		</div>
 		<div title="系统管理"  data-options="iconCls:'icon-item'" style="padding:10px">
 			<a href="javascript:openPasswordModifyDialog()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-modifyPassword'" style="width: 150px;">修改密码</a>

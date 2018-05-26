@@ -63,6 +63,7 @@
 	 $("#trueName").val("");
 	 $("#email").val("");
 	 $("#phone").val("");
+	 $("#roleName").combobox("setValue","");
  }
  
  function closeUserDialog(){
@@ -147,8 +148,6 @@
    		<tr>
    			<td>联系电话：</td>
    			<td><input type="text" id="phone" name="phone" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
-   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-   			<td>用户角色</td>
    		</tr>
    	</table>
    </form>

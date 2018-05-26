@@ -14,33 +14,22 @@ import org.apache.shiro.subject.PrincipalCollection;
 import com.ctf.entity.User;
 import com.ctf.service.UserService;
 
-/**
- * 自定义Realm
- * @author java1234_小锋
- *
- */
 public class MyRealm extends AuthorizingRealm{
 
 	
 	@Resource
 	private UserService UserService;
-	/**
-	 * 为当限前登录的用户授予角色和权
-	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		return null;
 	}
-
-	/**
-	 * 验证当前登录的用户
-	 */
+	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		String userName=(String)token.getPrincipal();
 		User user=UserService.getByUserName(userName);
 		if(user!=null){
-			SecurityUtils.getSubject().getSession().setAttribute("currentUser", user); // 当前用户信息存到session中
+			SecurityUtils.getSubject().getSession().setAttribute("currentUser", user); 
 			AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(user.getUserName(),user.getPassword(),"xx");
 			return authcInfo;
 		}else{
