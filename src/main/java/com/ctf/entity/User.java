@@ -1,19 +1,18 @@
 package com.ctf.entity;
 
 /**
- * ÓÃ»§ÊµÌå
+ * ï¿½Ã»ï¿½Êµï¿½ï¿½
  * @author Administrator
  *
  */
 public class User {
 
-	private Integer id; // ±àºÅ
-	private String userName; // ÓÃ»§Ãû
-	private String password; // ÃÜÂë
-	private String trueName; // ÕæÊµĞÕÃû
-	private String email; // ÓÊ¼ş
-	private String phone; // ÁªÏµµç»°
-	private String roleName; // ½ÇÉ«Ãû³Æ ÏµÍ³¹ÜÀíÔ± ÏúÊÛÖ÷¹Ü ¿Í»§¾­Àí ¸ß¹Ü
+	private Integer id; // ï¿½ï¿½ï¿½
+	private String userName; // ï¿½Ã»ï¿½ï¿½ï¿½
+	private String password; // ï¿½ï¿½ï¿½ï¿½
+	private String trueName; // ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
+	private String email; // ï¿½Ê¼ï¿½
+	private String phone; // ï¿½ï¿½Ïµï¿½ç»°
 	
 	public Integer getId() {
 		return id;
@@ -51,12 +50,5 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getRoleName() {
-		return roleName;
-	}
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-	
 	
 }

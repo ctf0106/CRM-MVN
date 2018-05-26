@@ -95,7 +95,7 @@
 				<img alt="logo" src="${pageContext.request.contextPath}/images/bglogo4.png">
 			</td>
 			<td valign="bottom" align="right" width="50%">
-				<font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.userName }</font>【${currentUser.trueName }】【${currentUser.roleName }】
+				<font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.userName }</font>【${currentUser.trueName }】
 			</td>
 		</tr>
 	</table>

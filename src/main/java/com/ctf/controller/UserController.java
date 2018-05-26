@@ -56,10 +56,10 @@ public class UserController {
 	@RequestMapping("/isExistName")
 	public void isExistName(String name,HttpServletResponse response)throws Exception{
 		User resultUser=userService.getByUserName(name);
-		if(resultUser!=null){
-			ResponseUtil.write(response,false);
-		}else{
+		if(resultUser==null){
 			ResponseUtil.write(response,true);
+		}else{
+			ResponseUtil.write(response,false);
 		}
 	}
 	/**

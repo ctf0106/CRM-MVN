@@ -3,6 +3,7 @@ package com.ctf.controller;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -142,11 +143,22 @@ public class CustomerController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/delete")
-	public String delete(@RequestParam(value="ids")String ids,HttpServletResponse response)throws Exception{
+	public String delete(@RequestParam(value="ids")String ids,HttpServletResponse response,HttpServletRequest request)throws Exception{
 		String []idsStr=ids.split(",");
+		String filePath=request.getServletContext().getRealPath("/");
 		for(int i=0;i<idsStr.length;i++){
+			Customer customer = customerService.findById(Integer.parseInt(idsStr[i]));
+			File qrCode = new File(filePath+"static/qrCodeImage/"+BarcodeFormat.QR_CODE+"_"+customer.getKhno()+".png");
+			if(qrCode!=null){ 
+				qrCode.delete();
+			}
+			File barCode = new File(filePath+"static/qrCodeImage/"+BarcodeFormat.CODE_128+"_"+customer.getKhno()+".png");
+			if(barCode!=null){ 
+				barCode.delete();
+			}
 			customerService.delete(Integer.parseInt(idsStr[i]));
 		}
+		
 		JSONObject result=new JSONObject();
 		result.put("success", true);
 		ResponseUtil.write(response, result);

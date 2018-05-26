@@ -40,10 +40,6 @@
 	 $("#fm").form("submit",{
 		url:url,
 		onSubmit:function(){
-			if($("#roleName").combobox("getValue")==""){
-				$.messager.alert("系统提示","请选择用户角色！");
-				return false;
-			}
 			return $(this).form("validate");
 		},
 		success:function(result){
@@ -67,7 +63,6 @@
 	 $("#trueName").val("");
 	 $("#email").val("");
 	 $("#phone").val("");
-	 $("#roleName").combobox("setValue","");
  }
  
  function closeUserDialog(){
@@ -115,7 +110,6 @@
    		<th field="trueName" width="50" align="center">真实姓名</th>
    		<th field="email" width="50" align="center">邮件</th>
    		<th field="phone" width="50" align="center">联系电话</th>
-   		<th field="roleName" width="50" align="center">角色</th>
    	</tr>
    </thead>
  </table>
@@ -155,13 +149,6 @@
    			<td><input type="text" id="phone" name="phone" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
    			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
    			<td>用户角色</td>
-   			<td>
-   				<select class="easyui-combobox" id="roleName" name="roleName" style="width: 154px" editable="false" panelHeight="auto">
-   					<option value="">请选择角色...</option>
-   					<option value="系统管理员">系统管理员</option>
-   				</select>
-   				&nbsp;<font color="red">*</font>
-   			</td>
    		</tr>
    	</table>
    </form>

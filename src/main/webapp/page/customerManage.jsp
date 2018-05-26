@@ -82,11 +82,11 @@
  
  function isExistName(name){
 		 $.ajaxSettings.async = false
+		 var flag;
 		 $.post("${pageContext.request.contextPath}/user/isExistName.do",{'name':name},function(result){
-			return result.success;
-			
+				 flag=result;	 
 		},"json");
-	 
+		 return flag;
  }
  
  function resetValue(){

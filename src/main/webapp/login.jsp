@@ -60,7 +60,6 @@ A:active {
 	function login(){
 		var userName=$("#userName").val();
 		var password=$("#password").val();
-		var roleName=$("#roleName").val();
 		if(userName==null||userName==""){
 			alert("用户名不能为空！");
 			return;
