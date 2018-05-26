@@ -11,6 +11,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="address" column="address"/>
 		<result property="postCode" column="postCode"/>
 		<result property="phone" column="phone"/>
+		<result property="fund" column="fund"/>
+		<result property="financing" column="financing"/>
 		<result property="companyID" column="companyID"/>
 	</resultMap>
 	<resultMap type="CustomerVo" id="CustomerVoResult">
@@ -20,6 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="address" column="address"/>
 		<result property="postCode" column="postCode"/>
 		<result property="phone" column="phone"/>
+		<result property="fund" column="fund"/>
+		<result property="financing" column="financing"/>
 		<result property="companyName" column="companyName"/>
 	</resultMap>
 	
@@ -57,8 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="add" parameterType="Customer" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO t_customer (id,khno,name,address,postCode,phone,companyID,gmt_create,gmt_modified) 
-		VALUES (null,#{khno},#{name},#{address},#{postCode},#{phone},#{companyID},#{gmt_create},#{gmt_modified});
+		INSERT INTO t_customer (id,khno,name,address,postCode,phone,fund,financing,companyID,gmt_create,gmt_modified) 
+		VALUES (null,#{khno},#{name},#{address},#{postCode},#{phone},#{fund},#{financing},#{companyID},#{gmt_create},#{gmt_modified});
 	</insert>
 	
 	<update id="update" parameterType="Customer">
@@ -78,6 +82,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="phone!=null and phone!='' ">
 				phone=#{phone},
+			</if>
+			<if test="fund!=null and fund!='' ">
+				phone=#{fund},
+			</if>
+			<if test="financing!=null and financing!='' ">
+				phone=#{financing},
 			</if>
 			<if test="companyID!=null and companyID!='' ">
 				companyID=#{companyID},
@@ -108,7 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="findByKhno" parameterType="String" resultMap="CustomerVoResult">
-		select t_customer.id,t_customer.khno,t_customer.name,t_customer.address,t_customer.postCode,t_customer.phone,t_company.name as companyName 
+		select t_customer.id,t_customer.khno,t_customer.name,t_customer.address,t_customer.phone,t_customer.postCode,t_customer.fund,t_customer.financing,t_customer.qrcode,t_company.name as companyName 
 		from t_customer LEFT JOIN t_company on t_customer.companyID=t_company.id where 1=1
 		<if test="_parameter != null">
              and t_customer.khno=#{khno}

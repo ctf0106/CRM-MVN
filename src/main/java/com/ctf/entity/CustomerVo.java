@@ -7,6 +7,10 @@ public class CustomerVo {
 	private String address; 
 	private String postCode;
 	private String phone;
+	private Float fund;
+	private Float financing;
+	private String barcode;
+	private String qrcode;
 	private String CompanyName;
 	public Integer getId() {
 		return id;
@@ -44,11 +48,36 @@ public class CustomerVo {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	public Float getFund() {
+		return fund;
+	}
+	public void setFund(Float fund) {
+		this.fund = fund;
+	}
+	public Float getFinancing() {
+		return financing;
+	}
+	public void setFinancing(Float financing) {
+		this.financing = financing;
+	}
+	public String getBarcode() {
+		return barcode;
+	}
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+	public String getQrcode() {
+		return qrcode;
+	}
+	public void setQrcode(String qrcode) {
+		this.qrcode = qrcode;
+	}
 	public String getCompanyName() {
 		return CompanyName;
 	}
 	public void setCompanyName(String companyName) {
 		CompanyName = companyName;
 	}
+	
 	
 }

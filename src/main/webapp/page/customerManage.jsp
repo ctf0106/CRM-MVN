@@ -9,6 +9,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/jquery-easyui-1.3.3/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/jquery-easyui-1.3.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/jquery-easyui-1.3.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jQuery.print.min.js"></script>
+
 <script type="text/javascript">
  
  var url;
@@ -49,7 +51,19 @@
 	 $("#fm").form("submit",{
 		url:url,
 		onSubmit:function(){
-			return $(this).form("validate");
+			var name=$("#name").val();
+			 var isExist=isExistName(name);
+			 if(!isExist){
+				 alert("用户名已经存在!");
+				return false; 
+			 }
+			var companyID=$("#companyID").combobox("getValue");
+			if(companyID==null || companyID==''){
+				alert("请归属的公司");
+				return false;
+			}
+			
+			 return $(this).form("validate");
 		},
 		success:function(result){
 			var result=eval('('+result+')');
@@ -66,13 +80,24 @@
 	 });
  }
  
+ function isExistName(name){
+		 $.ajaxSettings.async = false
+		 $.post("${pageContext.request.contextPath}/user/isExistName.do",{'name':name},function(result){
+			return result.success;
+			
+		},"json");
+	 
+ }
+ 
  function resetValue(){
 	 $("#name").val("");
 	 $("#address").val("");
 	 $("#postCode").val("");
 	 $("#phone").val("");
-	 $("#fax").val("");
-	 $("#webSite").val("");
+	 $("#fund").val("");
+	 $("#financing").val("");
+	 $("#companyID").val("");
+	 $("#companyID").html("请选择...");
  }
  
  function closeCustomerDialog(){
@@ -104,12 +129,39 @@
 		} 
 	 });
  }
+ /**
+ 显示二维码
+ */
  function formatOper(value, row, index){  
     if(row.qrcode){  
-        return "<img style='width:96px;height:96px;' border='1' src='"+row.qrcode+"'/>";  
+        return "<img style='width:96px;height:96px;' id=printQrCode_"+row.id+" border='1' src='data:image/gif;base64,"+row.qrcode+"'/>";
     }  
 }
-
+ function showBarCoder(value, row, index){  
+	    if(row.barcode){  
+	        return "<img style='width:350px;height:70px;' id=printBarCode_"+row.id+" border='1' src='data:image/gif;base64,"+row.barcode+"'/>";
+	    }  
+	}
+ 
+ function qrprint(value, row, index){
+	 return "<input type='button' value='打印' onClick=\"doPrint('"+row.id+"')\" >"
+ }
+ function doPrint(id){
+	 $("#printBarCode_"+id+"").print({
+		    globalStyles:false,//是否包含父文档的样式，默认为true
+		    mediaPrint:false,//是否包含media='print'的链接标签。会被globalStyles选项覆盖，默认为false
+		    stylesheet:null,//外部样式表的URL地址，默认为null
+		    noPrintSelector:".no-print",//不想打印的元素的jQuery选择器，默认为".no-print"
+		    iframe:true,//是否使用一个iframe来替代打印表单的弹出窗口，true为在本页面进行打印，false就是说新开一个页面打印，默认为true
+		    append:null,//将内容添加到打印内容的后面
+		    prepend:null,//将内容添加到打印内容的前面，可以用来作为要打印内容
+		    deferred:
+		 $.Deferred()//回调函数
+		});
+ };
+ 
+ 
+    
 </script>
 <title>Insert title here</title>
 </head>
@@ -122,7 +174,9 @@
 			<th field="cb" checkbox="true" align="center"></th>
 	 		<th field="id" width="50" align="center" hidden="true">编号</th>
 	 		<th field="khno" width="150" align="center">客户编号</th>
-	 		<th field="name" width="200" align="center">客户名称</th>
+	 		<th field="name" width="100" align="center">客户名称</th>
+	 		<th field="fund" width="100" align="center">基金金额</th>
+	 		<th field="financing" width="100" align="center">理财金额</th>
 	 		<th field="phone" width="100" align="center">联系电话</th>
 		</tr>
 	</thead>
@@ -132,7 +186,9 @@
 	 		<th field="postCode" width="100" align="center" >邮政编码</th>
 	 		<th field="companyName" width="100" align="center" >归属单位</th>
 	 		<th field="qrcode" width="100" align="center" hidden="true">二维码base64</th>
-	 		<th field="chakan" width="100" align="center" data-options="field:'id',width:60,align:'center',formatter:formatOper" >二维码</th>
+	 		<th field="chakan" width="120" align="center" data-options="field:'id',width:60,align:'center',formatter:formatOper" >二维码</th>
+	 		<th field="barcodeshow" width="350" align="center" data-options="field:'id',width:60,align:'center',formatter:showBarCoder" >条形码</th>
+	 		<th field="qrprint" width="100" align="center" data-options="field:'id',width:60,align:'center',formatter:qrprint" >打印</th>
 		</tr>
 	</thead>
  </table>
@@ -149,9 +205,7 @@
  	</div>
  </div>
  
- 
-  <div id="dlg" class="easyui-dialog" style="width:700px;height:450px;padding: 10px 20px"
-   closed="true" buttons="#dlg-buttons">
+ <div id="dlg" class="easyui-dialog" style="width:700px;height:450px;padding: 10px 20px" closed="true" buttons="#dlg-buttons">
    
    <form id="fm" method="post">
    	<table cellspacing="8px">
@@ -162,6 +216,14 @@
    			<td>客户地址：</td>
    			<td><input type="text" id="address" name="address" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
    		</tr>
+   		<tr>
+   			<td>基金金额：</td>
+   			<td><input type="text" id="fund" name="fund" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
+   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+   			<td>理财金额：</td>
+   			<td><input type="text" id="financing" name="financing" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
+   		</tr>
+   		
    		<tr>
    			<td>邮政编码：</td>
    			<td><input type="text" id="postCode" name="postCode" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
@@ -178,6 +240,7 @@
    	</table>
    </form>
  </div>
+ 
  
  <div id="dlg-buttons">
  	<a href="javascript:saveCustomer()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>

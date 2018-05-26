@@ -6,53 +6,54 @@ import java.util.Map;
 import com.ctf.entity.User;
 
 /**
- * ÓÃ»§Service½Ó¿Ú
+ * ï¿½Ã»ï¿½Serviceï¿½Ó¿ï¿½
  * @author Administrator
  *
  */
 public interface UserService {
 
 	/**
-	 * ÓÃ»§µÇÂ¼
+	 * ï¿½Ã»ï¿½ï¿½ï¿½Â¼
 	 * @param user
 	 * @return
 	 */
 	public User login(User user);
 	
 	/**
-	 * ²éÑ¯ÓÃ»§¼¯ºÏ
+	 * ï¿½ï¿½Ñ¯ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param map
 	 * @return
 	 */
 	public List<User> find(Map<String,Object> map);
 	
 	/**
-	 * »ñÈ¡×Ü¼ÇÂ¼Êý
+	 * ï¿½ï¿½È¡ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
 	 * @param map
 	 * @return
 	 */
 	public Long getTotal(Map<String,Object> map);
 	
 	/**
-	 * ÐÞ¸ÄÓÃ»§
+	 * ï¿½Þ¸ï¿½ï¿½Ã»ï¿½
 	 * @param user
 	 * @return
 	 */
 	public int update(User user);
 	
 	/**
-	 * Ìí¼ÓÓÃ»§
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
 	 * @param user
 	 * @return
 	 */
 	public int add(User user);
 	
 	/**
-	 * É¾³ýÓÃ»§
+	 * É¾ï¿½ï¿½ï¿½Ã»ï¿½
 	 * @param id
 	 * @return
 	 */
 	public int delete(Integer id);
 
 	public User getByUserName(String userName);
+
 }

@@ -108,17 +108,22 @@ public class CustomerController {
 			customer.setGmt_create(DateUtil.getCurrentDate());
 			customer.setGmt_modified(DateUtil.getCurrentDate());
 			resultTotal=customerService.add(customer);
+			String qrCode = this.createQrCode(customer.getKhno(), BarcodeFormat.QR_CODE,request,300,300);
+			String barCode = this.createQrCode(customer.getKhno(), BarcodeFormat.CODE_128,request,70,350);
+			
+			Customer updateObj=new Customer();
+			updateObj.setQrcode(qrCode);
+			updateObj.setBarcode(barCode);
+			updateObj.setId(customer.getId());
+			/**
+			 * 更新二维码
+			 */
+			customerService.update(updateObj);
 		}else{
+			customer.setGmt_modified(DateUtil.getCurrentDate());
 			resultTotal=customerService.update(customer);
 		}
-		String qrCode = this.createQrCode(customer.getKhno(), BarcodeFormat.QR_CODE,request, response);
-		Customer updateObj=new Customer();
-		updateObj.setQrcode(qrCode);
-		updateObj.setId(customer.getId());
-		/**
-		 * 更新二维码
-		 */
-		customerService.update(updateObj);
+		
 		JSONObject result=new JSONObject();
 		if(resultTotal>0){
 			result.put("success", true);
@@ -171,12 +176,10 @@ public class CustomerController {
 		return null;
 	}
 	
-	public String createQrCode(String khno,BarcodeFormat codeFormat,HttpServletRequest request,HttpServletResponse response)throws Exception{
+	public String createQrCode(String khno,BarcodeFormat codeFormat,HttpServletRequest request,int height,int width)throws Exception{
 		if(!khno.isEmpty()){
 			String filePath=request.getServletContext().getRealPath("/");
 			String qrCodeName=khno;
-			int width = 300;  
-	        int height = 300;  
 	        String format = "png";  
 	        Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();  
 	        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");  
@@ -186,17 +189,17 @@ public class CustomerController {
 	        } catch (WriterException e) {  
 	            e.printStackTrace();  
 	        }  
-	        File outputFile = new File(filePath+"static/qrCodeImage/"+qrCodeName+"."+format);
+	        File outputFile = new File(filePath+"static/qrCodeImage/"+codeFormat+"_"+qrCodeName+"."+format);
 	        MatrixToImageWriter.writeToFile(bitMatrix, format, outputFile);
 	        //读取二维码
-	        OutputStream os1 = new FileOutputStream(filePath+"static/qrCodeImage/"+qrCodeName+"."+format);  
+	        OutputStream os1 = new FileOutputStream(filePath+"static/qrCodeImage/"+codeFormat+"_"+qrCodeName+"."+format);  
 	        MatrixToImageWriter.writeToStream(bitMatrix, format, os1);  
 	        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);  
 	        ByteArrayOutputStream os = new ByteArrayOutputStream();
 	        ImageIO.write(image, format, os);
 	        byte b[] = os.toByteArray();
 	        String str = new BASE64Encoder().encode(b);  
-	        return "data:image/gif;base64,"+str;	
+	        return str;	
 		}
 		return null;
 	}

@@ -11,28 +11,19 @@ import java.util.Map;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-public class WordGenerator {
-	private static Configuration configuration = null;
-	private static Map<String, Template> allTemplates = null;
+public class WordUtil {
 	
-	static {
-		configuration = new Configuration();
+	public static File createDoc(Map<?, ?> dataMap, String type) {
+		//freemarker配置文件类
+		Configuration configuration = new Configuration();
 		configuration.setDefaultEncoding("utf-8");
-		configuration.setClassForTemplateLoading(WordGenerator.class, "/com/ctf/ftl");
-		allTemplates = new HashMap<>();	
+		configuration.setClassForTemplateLoading(WordUtil.class, "/com/ctf/ftl");
+		Map<String, Template> allTemplates = new HashMap<>();	
 		try {
-			allTemplates.put("resume", configuration.getTemplate("word.ftl"));
+			allTemplates.put(type, configuration.getTemplate("word.ftl"));
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
 		}
-	}
-
-	private WordGenerator() {
-		throw new AssertionError();
-	}
-
-	public static File createDoc(Map<?, ?> dataMap, String type) {
 		String name = "temp" + (int) (Math.random() * 100000) + ".doc";
 		File f = new File(name);
 		Template t = allTemplates.get(type);

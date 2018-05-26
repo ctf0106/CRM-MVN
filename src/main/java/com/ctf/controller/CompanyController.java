@@ -14,6 +14,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,9 +25,11 @@ import com.ctf.entity.Customer;
 import com.ctf.entity.PageBean;
 import com.ctf.service.CompanyService;
 import com.ctf.service.CustomerService;
+import com.ctf.util.ChartUtil;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
-import com.ctf.util.WordGenerator;
+import com.ctf.util.WordUtil;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -145,31 +148,36 @@ public class CompanyController {
 	
 	@RequestMapping("/export")
 	public void export(@RequestParam(value="id")String id,HttpServletResponse response,HttpServletRequest request)throws Exception{
-		
-		request.setCharacterEncoding("utf-8");  
-        Map<String, Object> map = new HashMap<String, Object>();  
-//        Enumeration<String> paramNames = request.getParameterNames();  
-//        while(paramNames.hasMoreElements()) {  
-//            String key = paramNames.nextElement();  
-//            String value = request.getParameter(key);  
-//            map.put(key, value);  
-//        }  
-        
-        Company company = companyService.findById(Integer.parseInt(id));
-        map.put("title",company.getName() );
-        List<Customer> customerList = customerService.findByCompanyId(Integer.parseInt(id));
-        map.put("customerList", customerList);
-        JSONObject.fromObject(map);
-        System.out.println(customerList);
-        File file = null;  
-        InputStream fin = null;  
-        ServletOutputStream out = null;  
+			request.setCharacterEncoding("utf-8");  
+	        Map<String, Object> map = new HashMap<String, Object>();  
+	        Company company = companyService.findById(Integer.parseInt(id));
+	        List<Customer> customerList = customerService.findByCompanyId(Integer.parseInt(id));
+	        /**
+	         * 统计图所需要的参数
+	         */
+	        	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		       for (Customer customer : customerList) {
+		    	   dataset.addValue(customer.getFund(),customer.getName(), customer.getName());
+		       }
+			
+	        String Statistics = ChartUtil.createChart(request,dataset, company.getId(),"员工基金统计图", "姓名","基金金额");
+	        map.put("title",company.getName());
+	        map.put("Statistics",Statistics);
+	        map.put("customerList", customerList);
+	        File file = null;
+	        InputStream fin = null;  
+	        ServletOutputStream out = null;  
         try {  
-            file = WordGenerator.createDoc(map, "resume");  
-            fin = new FileInputStream(file);  
+        	//生成word
+        	 file = WordUtil.createDoc(map, company.getName());  
+            //加载word
+        	fin = new FileInputStream(file);
+        	//response获取输出流，输出文件
             response.setCharacterEncoding("utf-8");  
-            response.setContentType("application/msword");  
-            response.addHeader("Content-Disposition", "attachment;filename=resume.doc");  
+            response.setContentType("application/msword");
+            //解决中文乱码的情况
+            String filename= new String(company.getName().getBytes("utf-8"), "ISO_8859_1"); 
+            response.addHeader("Content-Disposition", "attachment;filename="+filename+".doc");  
             out = response.getOutputStream();  
             byte[] buffer = new byte[512]; 
             int bytesToRead = -1;  

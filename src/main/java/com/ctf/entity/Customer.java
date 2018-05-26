@@ -1,7 +1,5 @@
 package com.ctf.entity;
 
-import java.util.Date;
-
 /**
  * @author Administrator
  *
@@ -14,6 +12,8 @@ public class Customer {
 	private String address; 
 	private String postCode;
 	private String phone;
+	private Float fund;
+	private Float financing;
 	private Integer companyID;
 	private String barcode;
 	private String qrcode;
@@ -54,6 +54,18 @@ public class Customer {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public Float getFund() {
+		return fund;
+	}
+	public void setFund(Float fund) {
+		this.fund = fund;
+	}
+	public Float getFinancing() {
+		return financing;
+	}
+	public void setFinancing(Float financing) {
+		this.financing = financing;
 	}
 	public Integer getCompanyID() {
 		return companyID;

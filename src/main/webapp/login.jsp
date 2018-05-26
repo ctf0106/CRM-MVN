@@ -69,10 +69,6 @@ A:active {
 			alert("密码不能为空！");
 			return;
 		}
-		if(roleName==null||roleName==""){
-			alert("请选择用户类型！");
-			return;
-		}
 		$("#adminlogin").submit();			
 		
 	}
@@ -105,13 +101,6 @@ A:active {
 					</TR>
 					<TR>
 						<TD><INPUT type="password" class=input value="${user.password }" name="password" id="password"/></TD>
-					</TR>
-					<TR>
-						<td>
-							<select id="roleName" name="roleName" class="input" style="margin-top: 15px;height: 24px">
-								<option value="系统管理员"  ${'系统管理员'==user.roleName?'selected':'' }>系统管理员</option>
-							</select>
-						</td>
 					</TR>
 				</TBODY>
 			</TABLE>
