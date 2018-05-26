@@ -1,60 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
 <title>客户管理系统登录</title>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/loginstyle/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/loginstyle/css/demo.css" />
+<!--必要样式-->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/loginstyle/css/component.css" />
+<!--[if IE]>
+<script src="js/html5.js"></script>
+<![endif]-->
 <script type="text/javascript" src="${pageContext.request.contextPath}/jquery-easyui-1.3.3/jquery.min.js"></script>
-<STYLE type=text/css>
-BODY {
-	TEXT-ALIGN: center;
-	PADDING-BOTTOM: 0px;
-	BACKGROUND-COLOR: #ddeef2;
-	MARGIN: 0px;
-	PADDING-LEFT: 0px;
-	PADDING-RIGHT: 0px;
-	PADDING-TOP: 0px
+<style type="text/css">
+input {
+    background-color: transparent !important;
 }
-A:link {
-	COLOR: #000000;
-	TEXT-DECORATION: none
+input:-webkit-autofill {
+    -webkit-transition: background-color 10000s cubic-bezier(1, -100, 1, -100) 0s;
 }
 
-A:visited {
-	COLOR: #000000;
-	TEXT-DECORATION: none
-}
 
-A:hover {
-	COLOR: #ff0000;
-	TEXT-DECORATION: underline
-}
-
-A:active {
-	TEXT-DECORATION: none
-}
-
-.input {
-	BORDER-BOTTOM: #ccc 1px solid;
-	BORDER-LEFT: #ccc 1px solid;
-	LINE-HEIGHT: 20px;
-	WIDTH: 182px;
-	HEIGHT: 20px;
-	BORDER-TOP: #ccc 1px solid;
-	BORDER-RIGHT: #ccc 1px solid
-}
-
-.input1 {
-	BORDER-BOTTOM: #ccc 1px solid;
-	BORDER-LEFT: #ccc 1px solid;
-	LINE-HEIGHT: 20px;
-	WIDTH: 120px;
-	HEIGHT: 20px;
-	BORDER-TOP: #ccc 1px solid;
-	BORDER-RIGHT: #ccc 1px solid;
-}
-</STYLE>
+</style>
 <script type="text/javascript">
 	function login(){
 		var userName=$("#userName").val();
@@ -72,69 +42,33 @@ A:active {
 </script>
 </head>
 <body>
-<FORM id=adminlogin  method=post
-	name=adminlogin action="${pageContext.request.contextPath}/user/login.do"  >
-<DIV></DIV>
-<TABLE style="MARGIN: auto; WIDTH: 100%; HEIGHT: 100%" border=0
-	cellSpacing=0 cellPadding=0>
-	<TBODY>
-		<TR>
-			<TD height=150>&nbsp;</TD>
-		</TR>
-		<TR style="HEIGHT: 254px">
-			<TD>
-			<DIV style="MARGIN: 0px auto; WIDTH: 936px"><IMG
-				style="DISPLAY: block" src="${pageContext.request.contextPath}/images/body_03.jpg"></DIV>
-			<DIV style="BACKGROUND-COLOR: #278296">
-			<DIV style="MARGIN: 0px auto; WIDTH: 936px">
-			<DIV
-				style="BACKGROUND: url(${pageContext.request.contextPath}/images/body_05.jpg) no-repeat; HEIGHT: 155px">
-			<DIV
-				style="TEXT-ALIGN: left; WIDTH: 265px; FLOAT: right; HEIGHT: 125px; _height: 95px">
-			<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
-				<TBODY>
-					<TR>
-						<TD style="HEIGHT: 45px"><INPUT type="text" class=input value="${user.userName }" name="userName" id="userName"></TD>
-					</TR>
-					<TR>
-						<TD><INPUT type="password" class=input value="${user.password }" name="password" id="password"/></TD>
-					</TR>
-				</TBODY>
-			</TABLE>
-			</DIV>
-			<DIV style="HEIGHT: 1px; CLEAR: both"></DIV>
-			<DIV style="WIDTH: 380px; FLOAT: right; CLEAR: both">
-			<TABLE border=0 cellSpacing=0 cellPadding=0 width=300>
-				<TBODY>
-					
-					<TR>
-						<TD width=100 align=right><INPUT
-							style="BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px"
-							id=btnLogin src="${pageContext.request.contextPath}/images/btn1.jpg" type=image name=btnLogin onclick="javascript:login();return false;"></TD>
-						<TD width=100 align=middle><INPUT
-							style="BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px"
-							id=btnReset src="${pageContext.request.contextPath}/images/btn2.jpg" type=image name=btnReset onclick="javascript:adminlogin.reset();return false;"></TD>
-					</TR>
-				</TBODY>
-			</TABLE>
-			</DIV>
-			</DIV>
-			</DIV>
-			</DIV>
-			<DIV style="MARGIN: 0px auto; WIDTH: 936px"><IMG
-				src="${pageContext.request.contextPath}/images/body_06.jpg"></DIV>
-			</TD>
-		</TR>
-		<TR style="HEIGHT: 30%">
-			<TD>&nbsp;</TD>
-		</TR>
-	</TBODY>
-</TABLE>
-</FORM>
-</body>
+		<div class="container demo-1">
+			<div class="content">
+				<div id="large-header" class="large-header">
+					<canvas id="demo-canvas"></canvas>
+					<div class="logo_box">
+						<h3>欢迎你</h3>
+						<form id="adminlogin" name="adminlogin" action="${pageContext.request.contextPath}/user/login.do"  method="post">
+							<div class="input_outer">
+								<span class="u_user"></span>
+								<input name="userName" id="userName" value="${user.userName }" class="text"  style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
+							</div>
+							<div class="input_outer">
+								<span class="us_uer"></span>
+								<input name="password" id="password" value="${user.password }" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"value="" type="password" placeholder="请输入密码">
+							</div>
+							<div class="mb2"><a class="act-but submit" href="javascript:;" onclick="javascript:login();return false;" style="color: #FFFFFF">登录</a></div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div><!-- /container -->
+		<script src="${pageContext.request.contextPath}/loginstyle/js/TweenLite.min.js"></script>
+		<script src="${pageContext.request.contextPath}/loginstyle/js/EasePack.min.js"></script>
+		<script src="${pageContext.request.contextPath}/loginstyle/js/rAF.js"></script>
+		<script src="${pageContext.request.contextPath}/loginstyle/js/demo-1.js"></script>
+		<div style="text-align:center;">
+<p>更多模板：<a href="http://www.mycodes.net/" target="_blank">源码之家</a></p>
+</div>
+	</body>
 </html>
-<script type=text/javascript>
-	if('${errorMsg}'!=''){
-		alert('${errorMsg}');
-	}
-</script>
