@@ -47,10 +47,6 @@ public class ChartUtil {
 		String filePath=request.getServletContext().getRealPath("/");
         FileOutputStream out = null;  
         try {  
-            File outFile = new File(filePath+"static/chart/");  
-            if (!outFile.getParentFile().exists()) {  
-                outFile.getParentFile().mkdirs();  
-            }  
             String currentDate = DateUtil.getCurrentDateStr();
             out = new FileOutputStream(filePath+"static/chart/"+currentDate+"_"+id+".png");  
             // 保存为PNG文件  

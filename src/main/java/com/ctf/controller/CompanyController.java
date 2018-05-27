@@ -145,7 +145,13 @@ public class CompanyController {
 		ResponseUtil.write(response, jsonArray);
 	}
 	
-	
+	/**
+	 * 导出word
+	 * @param id
+	 * @param response
+	 * @param request
+	 * @throws Exception
+	 */
 	@RequestMapping("/export")
 	public void export(@RequestParam(value="id")String id,HttpServletResponse response,HttpServletRequest request)throws Exception{
 			request.setCharacterEncoding("utf-8");  
@@ -155,7 +161,7 @@ public class CompanyController {
 	        /**
 	         * 统计图所需要的参数
 	         */
-	        	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		       for (Customer customer : customerList) {
 		    	   dataset.addValue(customer.getFund(),customer.getName(), customer.getName());
 		       }
