@@ -108,6 +108,7 @@
 	    <property name="filterChainDefinitions">  
 	        <value>  
 	             /login=anon
+	             /wx=anon
 	             /main**=authc  
 	        </value>  
 	    </property>

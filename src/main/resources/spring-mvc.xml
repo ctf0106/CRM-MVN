@@ -38,4 +38,5 @@
 
 	<!-- 使用注解的包，包括子集 -->
 	<context:component-scan base-package="com.ctf.controller" />
+	<context:component-scan base-package="com.ctf.wx.controller" />
 </beans>  
