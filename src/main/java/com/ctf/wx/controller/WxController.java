@@ -1,19 +1,21 @@
 package com.ctf.wx.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-
+import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.ctf.util.HttpClientUtils;
 
 import net.sf.json.JSONObject;
@@ -32,10 +34,6 @@ public class WxController {
 		String nonce = request.getParameter("nonce");
 		// 随机字符串
 		String echostr = request.getParameter("echostr");
-		System.out.println(signature);
-		System.out.println(timestamp);
-		System.out.println(nonce);
-		System.out.println(echostr);
 		boolean f = check("weixin", timestamp, nonce, signature);
 		response.setCharacterEncoding("UTF-8");
 		Writer w;
@@ -103,9 +101,10 @@ public class WxController {
 	@RequestMapping("/mLogin")
 	public String mLogin(HttpServletRequest request) {
 		String code = request.getParameter("code");
-		String appid="wx2195d53af725c53e";
-		String secret="4df490d350c1dded8a68ae875bb8bf79";
-		JSONObject access_Token = getAccess_Token(appid, secret, code);
+		/**
+		 * 获取token
+		 */
+		JSONObject access_Token = getAccess_Token(code);
 		String userInfo = getUserInfo(access_Token.getString("access_token"), access_Token.getString("openid"));
 		System.out.println(userInfo);
 		return "mlogin/index";
@@ -119,16 +118,60 @@ public class WxController {
 	 * @param code
 	 * @return
 	 */
-	public JSONObject getAccess_Token(String appid,String secret,String code){
-		String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code";
-		String result = null;
-		try {
-			result = HttpClientUtils.doGet(url, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		JSONObject access_token = JSONObject.fromObject(result);
-		return access_token;
+	public JSONObject getAccess_Token(String code){
+		
+		  String FileName = "userinfo_token.properties";  
+	        try {  
+	            Properties prop = new Properties();  
+	            InputStream fis = WxController.class.getClassLoader().getResourceAsStream(FileName);  
+	            prop.load(fis);
+	            fis.close();  
+	            String APPID = prop.getProperty("APPID");  
+	            String SECRET = prop.getProperty("SECRET");  
+	            String access_token = prop.getProperty("access_token");  
+	            String expires_in = prop.getProperty("expires_in");  
+	            String last_time = prop.getProperty("last_time");
+	            String openid = prop.getProperty("openid");
+	            int int_expires_in = 0;  
+	            long long_last_time = 0;  
+	            try {  
+	                int_expires_in = Integer.parseInt(expires_in);  
+	                long_last_time = Long.parseLong(last_time);  
+	            } catch (Exception e) {  
+	            	e.printStackTrace();
+	            }  
+	            long current_time = System.currentTimeMillis();  
+	            if ((current_time - long_last_time) / 1000 >= int_expires_in) {  
+	            	String url="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+APPID+"&secret="+SECRET+"&code="+code+"&grant_type=authorization_code";
+	                String doPost = HttpClientUtils.doGet(url);
+	                JSONObject jobject = JSONObject.fromObject(doPost);
+	                String  j_access_token = (String) jobject.get("access_token");  
+	                String  j_openid = (String) jobject.get("openid"); 
+	                String  j_expires_in = jobject.get("expires_in").toString();  
+	                if (j_access_token != null && j_expires_in != null) {  
+	                    prop.setProperty("access_token", j_access_token);  
+	                    prop.setProperty("expires_in", j_expires_in);  
+	                    prop.setProperty("openid", j_openid);  
+	                    prop.setProperty("last_time", System.currentTimeMillis() + "");  
+	                    URL url_ = WxController.class.getClassLoader().getResource(FileName);  
+	                    FileOutputStream fos = new FileOutputStream(new File(url_.toURI()));  
+	                    prop.store(fos, null);  
+	                    fos.close();
+	                }  
+	                JSONObject j_result=new JSONObject();
+	                j_result.put("access_token", j_access_token);
+	                j_result.put("openid", j_openid);
+	                return j_result;  
+	            } else { 
+	            	JSONObject result=new JSONObject();
+	            	result.put("access_token", access_token);
+	            	result.put("openid", openid);
+	                return result;  
+	            }  
+	        } catch (Exception e) { 
+	        	e.printStackTrace();
+	            return null;  
+	        }  
 	}
 	/**
 	 * 获取用户信息
@@ -140,11 +183,25 @@ public class WxController {
 		String url="https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid+"&lang=zh_CN";
 		String result = null;
 		try {
-			result = HttpClientUtils.doPost(url, null);
+			result = HttpClientUtils.doGet(url);
 			System.out.println(result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
+	
+	@RequestMapping("/createBarCode")
+	public String createBarCode(HttpServletRequest request) {
+		String code = request.getParameter("code");
+		/**
+		 * 获取token
+		 */
+		JSONObject access_Token = getAccess_Token(code);
+		String userInfo = getUserInfo(access_Token.getString("access_token"), access_Token.getString("openid"));
+		System.out.println(userInfo);
+		return "mlogin/index";
+
+	}
+	
 }

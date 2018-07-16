@@ -57,7 +57,7 @@ public class HttpClientUtils {
 		return result;
 	}
 	
-	public static String doGet(String url,String param) throws IOException {
+	public static String doGet(String url) throws IOException {
 		CloseableHttpClient httpClient=HttpClients.createDefault();
 		RequestConfig requestConfig = RequestConfig.custom()    
 		        .setConnectTimeout(10000).setConnectionRequestTimeout(10000)    
@@ -67,7 +67,6 @@ public class HttpClientUtils {
 		httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
 		CloseableHttpResponse httpResponse=null;
 		String result=null;
-		
 		try {
 		 httpResponse=httpClient.execute(httpGet);
 		 System.out.println("Status----------------------:"+httpResponse.getStatusLine().getStatusCode());
