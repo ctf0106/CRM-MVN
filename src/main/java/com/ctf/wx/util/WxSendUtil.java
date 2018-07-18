@@ -23,7 +23,7 @@ public class WxSendUtil {
 		/**
 		 * 使用的模版ID取的微信模版
 		 */
-		String templat_id="spnTZh0vRi1AlvdNUXB6js1CASAmNxjGLV_Q20HrO9A";
+		String templat_id="BEVr0x_ZDQtWH5CT2opAOHgqf-VFQHIp-5FyrirGxyI";
 		/**
 		 * 点击详情的URL
 		 */

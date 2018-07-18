@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="add" parameterType="User">
-		insert into t_user values(null,#{userName},#{password},#{trueName},#{email},#{phone},#{promote},#{openid},#{nickname})
+		insert into t_user values(null,#{userName},#{password},#{trueName},#{email},#{phone},#{openid},#{nickname},#{promote})
 	</insert>
 	
 	<update id="update" parameterType="User">

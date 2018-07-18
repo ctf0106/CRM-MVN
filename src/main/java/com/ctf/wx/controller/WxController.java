@@ -96,7 +96,7 @@ public class WxController {
 	 */
 	@RequestMapping("/initLogin")
 	public String initLogin(){
-		String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2195d53af725c53e&redirect_uri=http://1432816034.free.ngrok.cc/wx/mLogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+		String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+APPID+"&redirect_uri=http://1432816034.free.ngrok.cc/wx/mLogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 		return "redirect:"+url;
 	}
 	
@@ -112,14 +112,18 @@ public class WxController {
 		/**
 		 * 获取token
 		 */
-		JSONObject access_Token = getAccess_Token(code);
-		String userInfo = getUserInfo(access_Token.getString("access_token"), access_Token.getString("openid"));
-		JSONObject userObj = JSONObject.fromObject(userInfo);
-		String openid = userObj.getString("openid");
-		String nickname = userObj.getString("nickname");
-		mav.addObject("openid", openid);
-		mav.addObject("nickname", nickname);
-		mav.setViewName("mlogin/index");
+		if(code!=null && !code.equals("")){
+			JSONObject access_Token = getAccess_Token(code);
+			String userInfo = getUserInfo(access_Token.getString("access_token"), access_Token.getString("openid"));
+			JSONObject userObj = JSONObject.fromObject(userInfo);
+			String openid = userObj.getString("openid");
+			String nickname = userObj.getString("nickname");
+			mav.addObject("openid", openid);
+			mav.addObject("nickname", nickname);
+			mav.setViewName("mlogin/index");
+		}else{
+			mav.setViewName("mlogin/error.jsp");
+		}
 		return mav;
 
 	}

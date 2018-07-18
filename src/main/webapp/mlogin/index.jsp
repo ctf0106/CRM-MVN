@@ -8,18 +8,11 @@
 <title>注册绑定</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/mlogin/css/weui.css" />
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script type="text/javascript">
-$(function(){
-    $('#subBtn').on('click', function(){
-    });
-});
-</script>
 </head>
 <body>
 <!-- 代码 开始 -->
 <div class="weui-cells__title">注册账号</div>
     <div class="weui-cells weui-cells_form">
-        
          <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">用户名</label></div>
             <div class="weui-cell__bd weui-cell_primary"><input type="text" class="weui-input" id="userName" placeholder="用户名"/></div>
@@ -40,10 +33,10 @@ $(function(){
             <div class="weui-cell__hd"><label class="weui-label">email</label></div>
             <div class="weui-cell__bd weui-cell_primary"><input type="text" class="weui-input" id="email" placeholder="email"/></div>
         </div>
-        <div class="weui-cell">
+       <!--  <div class="weui-cell">
             <div class="weui-cell__hd"><label class="weui-label">推广码</label></div>
             <div class="weui-cell__bd weui-cell_primary"><input type="text" id="promote" class="weui-input" placeholder="推广码"/></div>
-        </div>
+        </div> -->
         
         <div class="weui-cell">
          <div class="weui-cell__hd"><label class="weui-label">微信openid</label></div>
@@ -56,28 +49,28 @@ $(function(){
     </div>
     <div class="weui-cells__tips"></div>
     <div class="weui-btn-area">
-        <a class="weui-btn weui-btn_primary" href="javascript:" id="subBtn">确定登录</a>
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="subBtn">注册</a>
     </div>
-      <div id="dialogs">
-		     <div class="js_dialog" id="dialogmesg" style="display: none;">
-		          <div class="weui-mask"></div>
-		          <div class="weui-dialog">
-		              <div class="weui-dialog__bd">注册成功</div>
-		              <div class="weui-dialog__ft">
-		                  <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
-		              </div>
-		          </div>
-		      </div>
-		      <div class="js_dialog" id="dialogmesg2" style="display: none;">
-		          <div class="weui-mask"></div>
-		          <div class="weui-dialog">
-		              <div class="weui-dialog__bd">注册失败</div>
-		              <div class="weui-dialog__ft">
-		                  <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
-		              </div>
-		          </div>
-		      </div>
-      </div>
+     <div id="dialogs">
+	     <div class="js_dialog" id="dialogmesg" style="display: none;">
+	          <div class="weui-mask"></div>
+	          <div class="weui-dialog">
+	              <div class="weui-dialog__bd">注册成功</div>
+	              <div class="weui-dialog__ft">
+	                  <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
+	              </div>
+	          </div>
+	      </div>
+	      <div class="js_dialog" id="dialogmesg2" style="display: none;">
+	          <div class="weui-mask"></div>
+	          <div class="weui-dialog">
+	              <div class="weui-dialog__bd">注册失败</div>
+	              <div class="weui-dialog__ft">
+	                  <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
+	              </div>
+	          </div>
+	      </div>
+     </div>
 <!-- 代码 结束 -->
 </body>
 <script type="text/javascript">
@@ -96,6 +89,35 @@ $(function(){
         	var promote=$('#promote').val();
         	var openid=$('#openid').val();
         	var nickname=$('#nickname').val();
+        	if(userName=="" || userName==null || userName==undefined){
+        		alert("用户名不能为空");
+        		return false;
+        	}
+        	if(password=="" || password==null || password==undefined){
+        		alert("密码不能为空");
+        		return false;
+        	}
+        	if(trueName=="" || trueName==null || trueName==undefined){
+        		alert("姓名不能为空");
+        		return false;
+        	}
+        	if(phone=="" || phone==null || phone==undefined){
+        		alert("手机号不能为空");
+        		return false;
+        	}
+        	var regular=/^[1][3,4,5,7,8][0-9]{9}$/;
+            if (!regular.test(phone)) {
+            	alert("手机号格式不正确");
+                return false;
+            } 
+        	if(email=="" || email==null || email==undefined){
+        		alert("email不能为空");
+        		return false;
+        	}
+        	if(openid=="" || openid==null || openid==undefined){
+        		alert("微信openid不能为空");
+        		return false;
+        	}
         	   $.ajax({
                    type: "post",
                    url: "${pageContext.request.contextPath}/user/save.do",
@@ -114,6 +136,7 @@ $(function(){
                 	   if(data.success){
                 		   $dialogmesg.fadeIn(200);
                 		   reset()
+                		   window.location.href="${pageContext.request.contextPath}/mlogin/success.jsp";
                 	   }else{
                 		   $dialogmesg2.fadeIn(200);
                 	   }
@@ -128,8 +151,6 @@ $(function(){
         	var phone=$('#phone').val("");
         	var email=$('#email').val("");
         	var promote=$('#promote').val("");
-        	var openid=$('#openid').val("");
-        	var nickname=$('#nickname').val("");
         }
     });
 </script>
