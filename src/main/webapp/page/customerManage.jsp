@@ -142,6 +142,9 @@
 	        return "<img style='width:350px;height:70px;' id=printBarCode_"+row.id+" border='1' src='data:image/gif;base64,"+row.barcode+"'/>";
 	    }  
 	}
+ function wechat(value, row, index){  
+	 return "<img style='width:96px;height:96px;' border='1' src='"+value+"'/>";
+	}
  
  function qrprint(value, row, index){
 	 return "<input type='button' value='打印' onClick=\"doPrint('"+row.id+"')\" >"
@@ -188,6 +191,7 @@
 	 		<th field="qrcode" width="100" align="center" hidden="true">二维码base64</th>
 	 		<th field="chakan" width="120" align="center" data-options="field:'id',width:60,align:'center',formatter:formatOper" >二维码</th>
 	 		<th field="barcodeshow" width="350" align="center" data-options="field:'id',width:60,align:'center',formatter:showBarCoder" >条形码</th>
+	 		<th field="wechat" width="120" align="center"" data-options="field:'id',width:60,align:'center',formatter:wechat" >公众号</th>
 	 		<th field="qrprint" width="100" align="center" data-options="field:'id',width:60,align:'center',formatter:qrprint" >打印</th>
 		</tr>
 	</thead>

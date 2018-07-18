@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="add" parameterType="User">
-		insert into t_user values(null,#{userName},#{password},#{trueName},#{email},#{phone})
+		insert into t_user values(null,#{userName},#{password},#{trueName},#{email},#{phone},#{promote},#{openid},#{nickname})
 	</insert>
 	
 	<update id="update" parameterType="User">
@@ -59,6 +59,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="phone!=null and phone!='' ">
 				phone=#{phone},
+			</if>
+			<if test="phone!=null and phone!='' ">
+				promote=#{promote},
+			</if>
+			<if test="phone!=null and phone!='' ">
+				openid=#{openid},
+			</if>
+			<if test="phone!=null and phone!='' ">
+				nickname=#{nickname},
 			</if>
 		</set>
 		where id=#{id}

@@ -7,12 +7,15 @@ package com.ctf.entity;
  */
 public class User {
 
-	private Integer id; // ���
-	private String userName; // �û���
-	private String password; // ����
-	private String trueName; // ��ʵ����
-	private String email; // �ʼ�
-	private String phone; // ��ϵ�绰
+	private Integer id;
+	private String userName; 
+	private String password; 
+	private String trueName; 
+	private String email; 
+	private String phone; 
+	private String promote;
+	private String openid;
+	private String nickname;
 	
 	public Integer getId() {
 		return id;
@@ -49,6 +52,24 @@ public class User {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public String getPromote() {
+		return promote;
+	}
+	public void setPromote(String promote) {
+		this.promote = promote;
+	}
+	public String getOpenid() {
+		return openid;
+	}
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	
 }

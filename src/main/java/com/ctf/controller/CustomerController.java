@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -28,8 +29,10 @@ import com.ctf.entity.PageBean;
 import com.ctf.service.CompanyService;
 import com.ctf.service.CustomerService;
 import com.ctf.util.DateUtil;
+import com.ctf.util.HttpClientUtils;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
+import com.ctf.wx.util.AccessTokenUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -76,6 +79,9 @@ public class CustomerController {
 		Long total=customerService.getTotal(map);
 		JSONObject result=new JSONObject();
 		JSONArray jsonArray=JSONArray.fromObject(customerList);
+		/**
+		 * 下面这段代码可以改成sql语句，改成left join
+		 */
 		JSONArray updateJSON=new JSONArray();
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);

@@ -16,7 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.ctf.util.HttpClientUtils;
+import com.ctf.wx.util.AccessTokenUtil;
+import com.ctf.wx.util.WxSendUtil;
 
 import net.sf.json.JSONObject;
 
@@ -79,7 +83,7 @@ public class WxController {
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return null;
 	}
 	
 	/**
@@ -99,16 +103,26 @@ public class WxController {
 	 * @return
 	 */
 	@RequestMapping("/mLogin")
-	public String mLogin(HttpServletRequest request) {
+	public ModelAndView mLogin(HttpServletRequest request) {
+		ModelAndView mav=new ModelAndView();
 		String code = request.getParameter("code");
 		/**
 		 * 获取token
 		 */
 		JSONObject access_Token = getAccess_Token(code);
 		String userInfo = getUserInfo(access_Token.getString("access_token"), access_Token.getString("openid"));
-		System.out.println(userInfo);
-		return "mlogin/index";
+		JSONObject userObj = JSONObject.fromObject(userInfo);
+		String openid = userObj.getString("openid");
+		String nickname = userObj.getString("nickname");
+		mav.addObject("openid", openid);
+		mav.addObject("nickname", nickname);
+		mav.setViewName("mlogin/index");
+		return mav;
 
+	}
+	@RequestMapping("/sendTemplateMsg")
+	public void sendTemplateMsg(int id) {
+		WxSendUtil.sendMsg("oCMMx1n19zgaWBrv17bUA5UxZAw8", "keyword1", "keyword2", "keyword3", "keyword4");
 	}
 	
 	/**
@@ -189,19 +203,6 @@ public class WxController {
 			e.printStackTrace();
 		}
 		return result;
-	}
-	
-	@RequestMapping("/createBarCode")
-	public String createBarCode(HttpServletRequest request) {
-		String code = request.getParameter("code");
-		/**
-		 * 获取token
-		 */
-		JSONObject access_Token = getAccess_Token(code);
-		String userInfo = getUserInfo(access_Token.getString("access_token"), access_Token.getString("openid"));
-		System.out.println(userInfo);
-		return "mlogin/index";
-
 	}
 	
 }

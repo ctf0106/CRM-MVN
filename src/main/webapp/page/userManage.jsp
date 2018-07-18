@@ -70,6 +70,29 @@
 	 $("#dlg").dialog("close");
 	 resetValue();
  }
+ function wechat(value, row, index){  
+    if(row){  
+        return "<img style='width:96px;height:96px;' border='1' src='"+row.wechat+"'/>";
+    }  
+ }
+ function sendTemplateMsg(value, row, index){  
+    if(row){  
+    	 return "<input type='button' value='发送' onClick=\"sendMsg('"+row.id+"')\" >"
+    }  
+ }
+ 
+ function sendMsg(id){
+	   $.ajax({
+           type: "post",
+           url: "${pageContext.request.contextPath}/wx/sendTemplateMsg.do",
+           data: {
+        	   "id":id,
+           },
+           dataType: "json",
+           success: function(data){
+           }
+       });
+ };
  
  function deleteUser(){
 	 var selectedRows=$("#dg").datagrid("getSelections");
@@ -105,12 +128,14 @@
    <thead>
    	<tr>
    		<th field="cb" checkbox="true" align="center"></th>
-   		<th field="id" width="50" align="center">编号</th>
-   		<th field="userName" width="50" align="center">用户名</th>
-   		<th field="password" width="50" align="center">密码</th>
-   		<th field="trueName" width="50" align="center">真实姓名</th>
-   		<th field="email" width="50" align="center">邮件</th>
-   		<th field="phone" width="50" align="center">联系电话</th>
+   		<th field="id" width="10" align="center">编号</th>
+   		<th field="userName" width="10" align="center">用户名</th>
+   		<th field="password" width="10" align="center">密码</th>
+   		<th field="trueName" width="10" align="center">真实姓名</th>
+   		<th field="email" width="10" align="center">邮件</th>
+   		<th field="phone" width="10" align="center">联系电话</th>
+   		<th field="sendTemplateMsg" width="10" align="center"" data-options="field:'id',width:60,align:'center',formatter:sendTemplateMsg" >公众号消息推送</th>
+   		<th field="wechat" width="30" align="center"" data-options="field:'id',width:60,align:'center',formatter:wechat" >公众号</th>
    	</tr>
    </thead>
  </table>

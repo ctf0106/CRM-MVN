@@ -1,5 +1,6 @@
 package com.ctf.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ctf.entity.PageBean;
 import com.ctf.entity.User;
 import com.ctf.service.UserService;
+import com.ctf.util.HttpClientUtils;
 import com.ctf.util.ResponseUtil;
 import com.ctf.util.StringUtil;
+import com.ctf.wx.util.AccessTokenUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -57,12 +60,34 @@ public class UserController {
 		Long total=userService.getTotal(map);
 		JSONObject result=new JSONObject();
 		JSONArray jsonArray=JSONArray.fromObject(userList);
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			String ticket = getQrCodeTicket(jsonObject.getInt("id"));
+			jsonObject.put("wechat", ticket);
+		}
 		result.put("rows", jsonArray);
 		result.put("total", total);
 		ResponseUtil.write(response, result);
 		return null;
 	}
 	
+	public String getQrCodeTicket(int scene_id) {
+		String accessToken = AccessTokenUtil.getAccessToken();
+		String url="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+accessToken+"";
+		String param="{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": "+scene_id+"}}}";
+		try {
+			//{"ticket":"gQHm8DwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAycG9VTE03ODNjTm0xMDAwMDAwM2IAAgQ5701bAwQAAAAA","url":"http:\/\/weixin.qq.com\/q\/02poULM783cNm10000003b"}
+			String ticketStr = HttpClientUtils.doPost(url, param);
+			JSONObject ticketObj = JSONObject.fromObject(ticketStr);
+			String ticket = ticketObj.getString("ticket");
+			String paramUrl="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+ticket+"";
+			return paramUrl;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 	/**
 	 * @param user
 	 * @param request
