@@ -10,9 +10,20 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,7 +41,7 @@ public class WxController {
 	
 	private static final String APPID="wx7a9a0aebc4bf0ad2";
 	private static final String APPSECRET="3fa4cded023ad1a358dd0fd40934e87f";
-
+	private Logger logger = Logger.getLogger(WxController.class);
 	@RequestMapping("/wx")
 	@ResponseBody
 	public void wx(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -45,10 +56,64 @@ public class WxController {
 		response.setCharacterEncoding("UTF-8");
 		Writer w;
 		if (f) {
-			w = response.getWriter();
-			w.write(echostr);// 接入指南让返回这个字符串。
-			w.close();
+			if(echostr!=null){
+				w = response.getWriter();
+				w.write(echostr);// 接入指南让返回这个字符串。
+				w.close();	
+			}
+			
 		}
+		Map<String, String> wxdata=null;
+		 try {
+			wxdata=parseXml(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(wxdata.get("MsgType")!=null){
+            if("event".equals(wxdata.get("MsgType"))){
+                if( "subscribe".equals(wxdata.get("Event"))){
+                	logger.info("用户未关注时，进行关注后的事件推送");
+                	String result = "开发者微信号:"+wxdata.get("ToUserName")+"关注者的openid:"+wxdata.get("FromUserName")
+                	+ "消息创建时间 :"+ wxdata.get("CreateTime")+"事件KEY值:"+ wxdata.get("EventKey");
+                	logger.info(result);
+                }else if("unsubscribe".equals(wxdata.get("Event"))){
+                	logger.info("用户取消后的事件推送");
+                	String result = "开发者微信号:"+wxdata.get("ToUserName")+"关注者的openid:"+wxdata.get("FromUserName")
+                	+ "消息创建时间 :"+ wxdata.get("CreateTime")+"事件KEY值:"+ wxdata.get("EventKey");
+                	logger.info(result);
+                }else if("SCAN".equals(wxdata.get("Event"))){
+                	logger.info("用户已关注时的事件推送");
+                	String result = "开发者微信号:"+wxdata.get("ToUserName")+"关注者的openid:"+wxdata.get("FromUserName")
+                	+ "消息创建时间 :"+ wxdata.get("CreateTime")+"事件KEY值:"+ wxdata.get("EventKey");
+                	logger.info(result);
+                }
+            }
+        }
+		
+	}
+
+	private Map<String, String> parseXml(HttpServletRequest request) throws Exception {
+		// 将解析结果存储在HashMap中
+        Map<String, String> map = new HashMap<String, String>();
+        // 从request中取得输入流
+        InputStream inputStream = request.getInputStream();
+        // 读取输入流
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inputStream);
+        // 得到xml根元素
+        Element root = document.getRootElement();
+        // 得到根元素的所有子节点
+        @SuppressWarnings("unchecked")
+		List<Element> elementList = root.elements();
+
+        // 遍历所有子节点
+        for (Element e : elementList)
+            map.put(e.getName(), e.getText());
+
+        // 释放资源
+        inputStream.close();
+        inputStream = null;
+        return map;
 	}
 
 	private static boolean check(String token, String timestamp, String nonce, String signature) {
