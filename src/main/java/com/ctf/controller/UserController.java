@@ -60,11 +60,18 @@ public class UserController {
 		Long total=userService.getTotal(map);
 		JSONObject result=new JSONObject();
 		JSONArray jsonArray=JSONArray.fromObject(userList);
+		
+		
 		for (int i = 0; i < jsonArray.size(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			
 			String ticket = getQrCodeTicket(jsonObject.getInt("id"));
+			
 			jsonObject.put("wechat", ticket);
 		}
+		
+		
+		
 		result.put("rows", jsonArray);
 		result.put("total", total);
 		ResponseUtil.write(response, result);

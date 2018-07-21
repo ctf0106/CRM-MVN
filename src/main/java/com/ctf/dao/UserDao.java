@@ -3,6 +3,7 @@ package com.ctf.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.ctf.entity.Promote;
 import com.ctf.entity.User;
 
 /**
@@ -48,4 +49,8 @@ public interface UserDao {
 	public int delete(Integer id);
 
 	public User getByUserName(String userName);
+
+	public int addPromote(Promote promote);
+
+	public int deletePromoteByOpenID(String userOpenID);
 }

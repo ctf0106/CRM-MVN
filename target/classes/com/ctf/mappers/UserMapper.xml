@@ -78,4 +78,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="delete" parameterType="Integer">
 		delete from t_user where id=#{id}
 	</delete>
+	<insert id="addPromote" parameterType="Promote">
+		insert into t_promote values(null,#{promoteID},#{userOpenID})
+	</insert>
+	<delete id="deletePromoteByOpenID" parameterType="String">
+		delete from t_promote where userOpenID=#{userOpenID}
+	</delete>
+	
 </mapper> 

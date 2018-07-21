@@ -77,7 +77,6 @@
 	<context:component-scan base-package="com.ctf.service" />
 	
 	
-	
 	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的ShiroDbRealm.java -->  
 	<bean id="myRealm" class="com.ctf.realm.MyRealm"/> 
 	

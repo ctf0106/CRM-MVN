@@ -26,10 +26,6 @@ public  class AccessTokenUtil {
             String access_token = prop.getProperty("access_token");  
             String expires_in = prop.getProperty("expires_in");  
             String last_time = prop.getProperty("last_time");
-            SimpleDateFormat dateformat = new SimpleDateFormat();
-    		String dateStr = dateformat.format(Long.parseLong(last_time));
-    		System.out.println(dateStr);
-    		
             int int_expires_in = 0;  
             long long_last_time = 0;  
   

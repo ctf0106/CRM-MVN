@@ -8,11 +8,12 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.ctf.dao.UserDao;
+import com.ctf.entity.Promote;
 import com.ctf.entity.User;
 import com.ctf.service.UserService;
 
 /**
- * 用户Service实现类
+ * 锟矫伙拷Service实锟斤拷锟斤拷
  * @author Administrator
  *
  */
@@ -55,5 +56,15 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getByUserName(String userName) {
 		return userDao.getByUserName(userName);
+	}
+
+	@Override
+	public int addPromote(Promote promote) {
+		return userDao.addPromote(promote);
+	}
+
+	@Override
+	public int deletePromoteByOpenID(String userOpenID) {
+		 return userDao.deletePromoteByOpenID(userOpenID);
 	}
 }
