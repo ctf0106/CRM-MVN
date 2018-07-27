@@ -1,15 +1,9 @@
 package com.ctf.wx.util;  
   
-import javax.net.ssl.HttpsURLConnection;
-
 import com.ctf.util.HttpClientUtils;
-
 import net.sf.json.JSONObject;
-
 import java.io.*;  
-  
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Properties;  
   
 public  class AccessTokenUtil {  
@@ -37,7 +31,7 @@ public  class AccessTokenUtil {
   
             }  
             long current_time = System.currentTimeMillis();  
-  
+            
             if ((current_time - long_last_time) / 1000 >= int_expires_in) {  
                 String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="  
                         + APPID + "&secret=" + APPSECRET;  
