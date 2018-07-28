@@ -53,4 +53,6 @@ public interface UserDao {
 	public int addPromote(Promote promote);
 
 	public int deletePromoteByOpenID(String userOpenID);
+
+	public User getById(int id);
 }

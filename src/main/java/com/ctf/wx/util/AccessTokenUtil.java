@@ -37,13 +37,15 @@ public  class AccessTokenUtil {
                         + APPID + "&secret=" + APPSECRET;  
                 String doPost = HttpClientUtils.doPost(url, null);
                 JSONObject jobject = JSONObject.fromObject(doPost);
+                System.out.println("返回的token是:"+jobject);
                 String  j_access_token = (String) jobject.get("access_token");  
                 String  j_expires_in = jobject.get("expires_in").toString();  
                 if (j_access_token != null && j_expires_in != null) {  
                     prop.setProperty("access_token", j_access_token);  
                     prop.setProperty("expires_in", j_expires_in);  
                     prop.setProperty("last_time", System.currentTimeMillis() + "");  
-                    URL url_ = AccessTokenUtil.class.getClassLoader().getResource(FileName);  
+                    URL url_ = AccessTokenUtil.class.getClassLoader().getResource(FileName); 
+                    System.out.println("token的地址是："+url_);
                     FileOutputStream fos = new FileOutputStream(new File(url_.toURI()));  
                     prop.store(fos, null);  
                     fos.close();

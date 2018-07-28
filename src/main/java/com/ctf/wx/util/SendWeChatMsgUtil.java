@@ -15,7 +15,7 @@ public class SendWeChatMsgUtil {
 	 * @param first
 	 * @return
 	 */
-	public static JSONObject pack2JsonMsg(String first,String keyword1,String keyword2,String keyword3,String keyword4){
+	public static JSONObject pack2JsonMsg(String first,String keyword1,String keyword2,String remark){
         JSONObject json = new JSONObject();
         try {
             JSONObject jsonFirst = new JSONObject();
@@ -29,20 +29,14 @@ public class SendWeChatMsgUtil {
             keyword2Obj.put("value", keyword2);
             keyword2Obj.put("color", "#173177");
             
-            JSONObject keyword3Obj = new JSONObject();
-            keyword3Obj.put("value", keyword3);
-            keyword3Obj.put("color", "#173177");
-            
-            
-            JSONObject keyword4Obj = new JSONObject();
-            keyword4Obj.put("value", keyword4);
-            keyword4Obj.put("color", "#173177");
+            JSONObject remarkObj = new JSONObject();
+            remarkObj.put("value", remark);
+            remarkObj.put("color", "#173177");
             
             json.put("first", jsonFirst);
             json.put("keyword1", keyword1Obj);
             json.put("keyword2", keyword2Obj);
-            json.put("keyword3", keyword3Obj);
-            json.put("keyword4", keyword4Obj);
+            json.put("remark", remarkObj);
         } catch (JSONException e) {
             e.printStackTrace();
         }

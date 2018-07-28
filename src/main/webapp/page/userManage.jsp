@@ -90,6 +90,10 @@
            },
            dataType: "json",
            success: function(data){
+        	   if(data.success){
+        		   alert("微信消息推送成功");   
+        	   }
+        	   
            }
        });
  };

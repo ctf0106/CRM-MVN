@@ -14,16 +14,16 @@ public class WxSendUtil {
 	 * @param customerID 顾客唯一标识用来查询详情页面
 	 * @return
 	 */
-	public static String sendMsg(String touser,String keyword1,String keyword2,String keyword3,String keyword4){
-		String first="消息推送测试哦";
+	public static String sendMsg(String touser,String keyword1,String keyword2,String remark){
+		String first="恭喜你成功注册成为景德镇邮政会员！";
 		/**
 		 * 将数据转换为微信模版消息json
 		 */
-		JSONObject packJsonmsg = SendWeChatMsgUtil.pack2JsonMsg(first,keyword1,keyword2,keyword3,keyword4);
+		JSONObject packJsonmsg = SendWeChatMsgUtil.pack2JsonMsg(first,keyword1,keyword2,remark);
 		/**
 		 * 使用的模版ID取的微信模版
 		 */
-		String templat_id="BEVr0x_ZDQtWH5CT2opAOHgqf-VFQHIp-5FyrirGxyI";
+		String templat_id="nzw1KDMKqK4vRUdjjOiOPBKpaFUfvUvrAUruVM5sD94";
 		/**
 		 * 点击详情的URL
 		 */

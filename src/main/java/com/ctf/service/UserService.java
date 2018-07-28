@@ -61,4 +61,6 @@ public interface UserService {
 
 	public int deletePromoteByOpenID(String userOpenID);
 
+	public User getById(int id);
+
 }

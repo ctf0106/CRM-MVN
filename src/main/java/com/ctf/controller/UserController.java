@@ -149,7 +149,17 @@ public class UserController {
 		ResponseUtil.write(response, result);
 		return null;
 	}
-	
+	@RequestMapping("/delete")
+	public String delete(@RequestParam(value="ids")String ids,HttpServletResponse response)throws Exception{
+		String []idsStr=ids.split(",");
+		for(int i=0;i<idsStr.length;i++){
+			userService.delete(Integer.parseInt(idsStr[i]));
+		}
+		JSONObject result=new JSONObject();
+		result.put("success", true);
+		ResponseUtil.write(response, result);
+		return null;
+	}
 	/**
 	 * @param user
 	 * @param response

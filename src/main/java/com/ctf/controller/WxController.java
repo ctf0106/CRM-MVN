@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.ctf.entity.User;
 import com.ctf.service.UserService;
 import com.ctf.service.WxService;
 import com.ctf.util.HttpClientUtils;
@@ -32,7 +34,7 @@ public class WxController {
 	 * 2.推送功能。
 	 * 3.服务号关注的时候能带参数
 	 */
-	private static final String APPID="wx2195d53af725c53e";
+	private static final String APPID="wx7a9a0aebc4bf0ad2";
 	private static final String APPSECRET="3fa4cded023ad1a358dd0fd40934e87f";
 	
 	@Resource
@@ -109,7 +111,7 @@ public class WxController {
 	 */
 	@RequestMapping("/initLogin")
 	public String initLogin(){
-		String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+APPID+"&redirect_uri=http://1432816034.free.ngrok.cc/wx/mLogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+		String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+APPID+"&redirect_uri=http://jdzpost.jxpost.com/wx/mLogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 		return "redirect:"+url;
 	}
 	
@@ -141,10 +143,20 @@ public class WxController {
 
 	}
 	@RequestMapping("/sendTemplateMsg")
-	public void sendTemplateMsg(int id) {
-		
-		
-		WxSendUtil.sendMsg("oCMMx1n19zgaWBrv17bUA5UxZAw8", "关键词1", "关键词2", "keyword3", "keyword4");
+	public void sendTemplateMsg(int id,HttpServletResponse response) {
+		User user=userService.getById(id);
+		if(user!=null){
+			WxSendUtil.sendMsg(user.getOpenid(), user.getTrueName(), "2018年", "你的微信昵称是"+user.getNickname());	
+		}else{
+			System.out.println("用户为空...........");
+		}
+		JSONObject result=new JSONObject();
+		result.put("success", true);
+		try {
+			ResponseUtil.write(response, result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

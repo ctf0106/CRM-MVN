@@ -67,4 +67,9 @@ public class UserServiceImpl implements UserService{
 	public int deletePromoteByOpenID(String userOpenID) {
 		 return userDao.deletePromoteByOpenID(userOpenID);
 	}
+
+	@Override
+	public User getById(int id) {
+		return userDao.getById(id);
+	}
 }

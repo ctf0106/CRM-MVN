@@ -11,6 +11,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="trueName" column="trueName"/>
 		<result property="email" column="email"/>
 		<result property="phone" column="phone"/>
+		<result property="openid" column="openid"/>
+		<result property="nickname" column="nickname"/>
 	</resultMap>
 	
 	<select id="login" parameterType="User" resultMap="UserResult">
@@ -74,6 +76,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	<select id="getByUserName" parameterType="String" resultMap="UserResult">
 		select * from t_user where userName=#{userName}
+	</select>
+	<select id="getById" parameterType="Integer" resultMap="UserResult">
+		select * from t_user where id=#{id}
 	</select>
 	<delete id="delete" parameterType="Integer">
 		delete from t_user where id=#{id}
