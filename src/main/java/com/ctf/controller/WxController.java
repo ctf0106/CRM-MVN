@@ -2,26 +2,31 @@ package com.ctf.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.dom4j.DocumentException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ctf.entity.CustomServiceMessage;
+import com.ctf.entity.TransInfo;
 import com.ctf.entity.User;
 import com.ctf.service.UserService;
-import com.ctf.service.WxService;
 import com.ctf.util.HttpClientUtils;
 import com.ctf.util.ResponseUtil;
+import com.ctf.wx.util.AccessTokenUtil;
+import com.ctf.wx.util.CheckSignatureUtil;
 import com.ctf.wx.util.MessageUtil;
 import com.ctf.wx.util.WxSendUtil;
 import com.ctf.wx.util.XmlUtil;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -40,69 +45,131 @@ public class WxController {
 	@Resource
 	private UserService userService;
 	
-	@Resource
-	private WxService wxService;
-	
-	@RequestMapping("/wx")
+	@RequestMapping(value="/wx",method={RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
 	public void wx(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String signature = request.getParameter("signature");
-		// 时间戳
-		String timestamp = request.getParameter("timestamp");
-		// 随机数
-		String nonce = request.getParameter("nonce");
-		// 随机字符串
-		String echostr = request.getParameter("echostr");
-		boolean verify = wxService.checkData("weixin", timestamp, nonce, signature);
+		//获取微信服务器传来的相关参数
+		String method = request.getMethod();
+		/**
+		 * 如果是get请求则是验证服务器配置
+		 * 如果是post请求则是消息请求
+		 */
 		
-		
-		Map<String, String> wxdata=wxService.parseXml(request);
-		wxService.map2Data(wxdata);
-		
-		
-		if (verify) {
-			if(echostr!=null){
-				try {
-					ResponseUtil.write(response, echostr);
-				} catch (Exception e) {
-					e.printStackTrace();
+		if(method!=null && method.equals("GET")){
+			String signature = request.getParameter("signature");
+	        String timestamp = request.getParameter("timestamp");
+	        String nonce = request.getParameter("nonce");
+	        String echostr = request.getParameter("echostr");
+	        PrintWriter out = response.getWriter();
+	        //调用比对signature的方法，实现对token和传入的参数进行hash算法后的结果比对
+	        if(CheckSignatureUtil.checkSignature(signature, timestamp, nonce)){
+	            out.print(echostr);
+	        } 
+		}else if(method!=null && method.equals("POST")){
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			String message = "success";
+				//把微信返回的xml信息转义成map
+				Map<String, String> map = XmlUtil.xmlToMap(request);
+				String fromUserName = map.get("FromUserName");//消息来源用户标识
+				String toUserName = map.get("ToUserName");//消息目的用户标识
+				String msgType = map.get("MsgType");//消息类型
+				String content = map.get("Content");//消息内容
+				
+				String eventType = map.get("Event");
+				if(MessageUtil.MSGTYPE_EVENT.equals(msgType)){//如果为事件类型
+					if(MessageUtil.MESSAGE_SUBSCIBE.equals(eventType)){//处理订阅事件
+						message = MessageUtil.subscribeForText(toUserName, fromUserName);
+					}else if(MessageUtil.MESSAGE_UNSUBSCIBE.equals(eventType)){//处理取消订阅事件
+						message = MessageUtil.unsubscribe(toUserName, fromUserName);
+					}if(MessageUtil.MESSAGE_CLICK.equals(eventType)){
+						//客服系统
+						String eventKey= map.get("EventKey");
+						if(eventKey.equals("customer")){
+							String onlineCustomer = this.getOnlineCustomer();
+							System.out.println(onlineCustomer);
+							if(onlineCustomer!=null && !onlineCustomer.equals("")){
+								CustomServiceMessage cus=new CustomServiceMessage();
+				            	cus.setToUserName(fromUserName);  
+				            	cus.setFromUserName(toUserName);  
+				            	cus.setCreateTime(new Date().getTime());  
+				            	cus.setMsgType(MessageUtil.TRANSFER_CUSTOMER_SERVICE);  
+				            	TransInfo t=new TransInfo();
+				            	t.setKfAccount(onlineCustomer);
+				            	cus.setTransInfo(t);
+				            	message=MessageUtil.customMessageToXml(cus);
+							}else{
+								//没有在线的客服人员！
+								message= MessageUtil.customer(toUserName, fromUserName);
+							}
+							
+						}
+					}
 				}
-			}
-			
+				out.println(message);
+				if(out!=null){
+					out.close();
+				}
 		}
-//		request.setCharacterEncoding("UTF-8");
-//		response.setCharacterEncoding("UTF-8");
-//		PrintWriter out = response.getWriter();
-//		String message = "success";
-//		try {
-//			//把微信返回的xml信息转义成map
-//			Map<String, String> map = XmlUtil.xmlToMap(request);
-//			String fromUserName = map.get("FromUserName");//消息来源用户标识
-//			String toUserName = map.get("ToUserName");//消息目的用户标识
-//			String msgType = map.get("MsgType");//消息类型
-//			String content = map.get("Content");//消息内容
-//			
-//			String eventType = map.get("Event");
-//			if(MessageUtil.MSGTYPE_EVENT.equals(msgType)){//如果为事件类型
-//				if(MessageUtil.MESSAGE_SUBSCIBE.equals(eventType)){//处理订阅事件
-//					message = MessageUtil.subscribeForText(toUserName, fromUserName);
-//				}else if(MessageUtil.MESSAGE_UNSUBSCIBE.equals(eventType)){//处理取消订阅事件
-//					message = MessageUtil.unsubscribe(toUserName, fromUserName);
-//				}
-//			}
-//		} catch (DocumentException e) {
-//			e.printStackTrace();
-//		}finally{
-//			out.println(message);
-//			if(out!=null){
-//				out.close();
-//			}
-//		}
-
-		
+       
 		
 	}
-
+	
+	private String getCustomerWx(String kf_id){
+		String accessToken = AccessTokenUtil.getAccessToken();
+		String url="https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token="+accessToken+"";
+		try {
+			String result = HttpClientUtils.doGet(url);
+			JSONObject resultObj = JSONObject.fromObject(result);
+			if(resultObj!=null){
+				if(!resultObj.has("errcode")){
+					JSONArray jsonArray = resultObj.getJSONArray("kf_list");
+					for (int i = 0; i < jsonArray.size(); i++) {
+						JSONObject jsonObject = jsonArray.getJSONObject(i);
+						if(kf_id.equals(jsonObject.getString("kf_id"))){
+							return jsonObject.getString("kf_wx");
+						}
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 获取所有的客服，如果有在线的客服返回查询到的第一个在线客服。
+	 * @return
+	 */
+	private String getOnlineCustomer(){
+		String accessToken = AccessTokenUtil.getAccessToken();
+		String url="https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist?access_token="+accessToken+"";
+		try {
+			String result = HttpClientUtils.doGet(url);
+			JSONObject resultObj = JSONObject.fromObject(result);
+			if(resultObj!=null){
+				System.out.println(result);
+				if(!resultObj.has("errcode")){
+					JSONArray jsonArray = resultObj.getJSONArray("kf_online_list");
+					for (int i = 0; i < jsonArray.size(); i++) {
+						JSONObject jsonObject = jsonArray.getJSONObject(i);
+						String status = jsonObject.getString("status");
+						if(status.equals("1")){
+							String kf_id = jsonObject.getString("kf_id");
+							return this.getCustomerWx(kf_id);
+							
+						}
+					}
+				}
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 	
 	/**
 	 *第一步重定向到微信请求
@@ -195,4 +262,16 @@ public class WxController {
 		return result;
 	}
 	
+	@RequestMapping("/createMenu")
+	public void createMenu(HttpServletResponse response) {
+		String accessToken = AccessTokenUtil.getAccessToken();
+		String createMeunUrl="https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+accessToken+"";
+		String param="{\"button\":[{\"name\":\"注册绑定\",\"type\":\"view\",\"url\":\"http://jdzpost.jxpost.com/wx/initLogin.html\"},{\"type\":\"click\",\"name\":\"联系客服\",\"key\":\"customer\"}]}\"";
+		try {
+			String result = HttpClientUtils.doPost(createMeunUrl, param);
+			System.out.println(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

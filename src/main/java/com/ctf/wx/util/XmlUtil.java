@@ -17,12 +17,21 @@ import com.ctf.entity.TextMessage;
 import com.thoughtworks.xstream.XStream;
 
 public class XmlUtil {
-	public static Map<String, String> xmlToMap(HttpServletRequest request) throws IOException, DocumentException{
+	public static Map<String, String> xmlToMap(HttpServletRequest request) throws IOException{
 		HashMap<String, String> map = new HashMap<String,String>();
 		SAXReader reader = new SAXReader();
- 
-		InputStream ins = request.getInputStream();
-		Document doc = reader.read(ins);
+		InputStream inputStream = null;
+		try {
+			inputStream = request.getInputStream();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Document doc = null;
+		try {
+			doc = reader.read(inputStream);
+		} catch (DocumentException e1) {
+			e1.printStackTrace();
+		}
  
 		Element root = doc.getRootElement();
 		@SuppressWarnings("unchecked")
@@ -31,7 +40,7 @@ public class XmlUtil {
 		for(Element e:list){
 			map.put(e.getName(), e.getText());
 		}
-		ins.close();
+		inputStream.close();
 		return map;
 	}
 	public static String textMsgToxml(TextMessage textMessage){
